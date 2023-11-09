@@ -1,0 +1,48 @@
+﻿/*=============== 
+    1. Index
+    2. About
+    3. Admin Pages
+
+=============================*/
+
+/* 1. Index */
+
+#welcome {
+    min-height: calc(100vh);
+    background-image: url(../../img/dist/assets/artbyalmaz-hero.jpg);
+    background-repeat: no-repeat;
+    background-position: 0 50%;
+    background-size: cover;
+}
+
+/*
+    3. Admin pages
+        Country
+*/
+
+    /* Shared Itesm */
+.allcountries__wrap,
+.employee-directory-wrap {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--mb-1-5);
+}
+
+#add_country .container,
+#details_country .container,
+#edit_country .container,
+#add_vendor .container,
+#add_station .container,
+#all_vendors .container,
+#all_stations .container,
+#details_station .container,
+#all_employees .container,
+#form_account .container,
+#add_employee .container {
+    flex-direction: column;
+}
+
+    /* All countries */
+
+/* Employee */

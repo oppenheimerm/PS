@@ -1,0 +1,69 @@
+﻿<div id="header__desktop" class="header__desktop header scroll-header">
+    <div id="navbar__container" class="container container__wide">
+        <nav class="nav__desktop-wrap flex">
+            <div class="nav__desktop-left">
+                <a class="nav__desktop-logo" asp-page="/index">
+                    PETROLSIST
+                </a>
+            </div>
+            <div class="nav__desktop-right">
+                <div class="desktop__right-wrap">
+                    <ul class="nav__right-links flex" id="desktop-links">
+                        <li class="dsktop__nav-link-item"><a asp-page="/Index">Home</a></li>
+                        <li class="dsktop__nav-link-item"><a asp-page="/Cities">Cities</a></li>
+                        <li class="dsktop__nav-link-item"><a asp-page="/About">About</a></li>
+                        <li class="dsktop__nav-link-item"><a asp-page="/Privacy">Privacy</a></li>
+                        <li class="dsktop__nav-link-item"><a asp-page="/Shop/Index">Shop</a></li>
+                        <partial name="_LoginPartial" />
+
+                    </ul>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="admin__actions-wrap flex">
+                            <button class="admin__btn" id="admin__btn-action">
+                                Admin
+                                <span id="arrow" class="material-symbols-outlined">
+                                    expand_more
+                                </span>
+                            </button>
+                            <div class="dropdown" id="admin__dropdown">
+                                <a asp-page="/Admin/CreatePost">
+                                    <span class="material-symbols-outlined">
+                                        add
+                                    </span>
+                                    Create new post
+                                </a>
+                                <a asp-page="/Admin/AllPosts">
+                                    <span class="material-symbols-outlined">
+                                        table_view
+                                    </span>
+                                    View all post
+                                </a>
+                                <a asp-page="/Admin/Index">
+                                    <span class="material-symbols-outlined">
+                                        dashboard
+                                    </span>
+                                    Dashboard
+                                </a>
+                                <a asp-page="/Admin/Settings">
+                                    <span class="material-symbols-outlined">
+                                        settings
+                                    </span>
+                                    Settings
+                                </a>
+                                <a asp-page="/Admin/Logout">
+                                    <span class="material-symbols-outlined">
+                                        logout
+                                    </span>
+                                    Sign Out
+                                </a>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+
+            </div>
+        </nav>
+    </div>
+</div>

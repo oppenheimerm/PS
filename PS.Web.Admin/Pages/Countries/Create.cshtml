@@ -1,0 +1,42 @@
+﻿@page
+@model PS.Web.Admin.Pages.Countries.CreateModel
+@{
+	ViewData["Title"] = "Add Country";
+}
+
+<section class="section" id="add_country">
+    <div class="container flex">
+        <form id="form_add_country" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <fieldset class="field__set">
+                <legend class="form__legend">Add a new country</legend>
+                <div class="form__margin">
+                    <label asp-for="AddCountryVM.CountryName" class="control-label"></label>
+                    <input asp-for="AddCountryVM.CountryName" class="form__input" placeholder="Country name" aria-label="Country name" />
+                    <span asp-validation-for="AddCountryVM.CountryName" class="text-danger"></span>
+                </div>
+                <div class="form__margin">
+                    <label asp-for="AddCountryVM.CountryCode" class="control-label"></label>
+                    <input asp-for="AddCountryVM.CountryCode" class="form__input" placeholder="3 letter country code (required)" aria-label="Country code (required)" />
+                    <span asp-validation-for="AddCountryVM.CountryCode" class="text-danger"></span>
+                </div>
+                <div class="form__margin">
+                    <input type="submit" valuse="SUBMIT" class="btn btn__default form__button" />
+                </div>
+            </fieldset>
+        </form>
+
+        <div>
+            <a asp-page="Index">Back to List</a>
+        </div>
+
+    </div>
+</section>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

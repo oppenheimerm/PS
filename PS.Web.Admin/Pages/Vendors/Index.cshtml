@@ -1,0 +1,55 @@
+﻿@page
+@model PS.Web.Admin.Pages.Vendors.IndexModel
+@{
+    ViewData["Title"] = "View all Petrol Vendors";
+}
+
+<section class="section" id="all_vendors">
+    <div class="allcountries__wrap container flex">
+        <p class="section__label touppersection__label">Vendors</p>
+        <a class="page__links" asp-page="./Create">New</a>
+        <table class="table table__middle">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Vendor Code</th>
+                    <th>Country</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Vendors)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @item.VendorName
+                        </td>
+                        <td>
+                            @item.VendorCode
+                        </td>
+                        <td>
+                            @item.Country.CountryName
+                        </td>
+                        <td>
+                            <div class="table__actions-wrap">
+                                <a class="btn btn__small" asp-page="Details" asp-route-id="@item.Id">Details</a>
+
+                                <a class="btn btn__small" asp-page="Edit" asp-route-id="@item.Id">
+                                    Edit
+                                </a>
+                                <a class="btn danger btn__small" asp-page="/admin/deletepost" asp-route-id="@item.Id">
+                                    Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</section>

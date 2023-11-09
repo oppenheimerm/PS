@@ -1,0 +1,94 @@
+﻿@page
+@model PS.Web.Admin.Pages.Stations.DetailsModel
+
+@{
+    ViewData["Title"] = $"View Station Details for : {Model.Station?.StationAddress} ";
+}
+
+<section class="section" id="details_station">
+    <div class="container flex">
+        <dl class="disc__list">
+            <dt class="disc__list-title">
+                @Html.DisplayNameFor(model => model.Station.Id)
+            </dt>
+            <dd class="disc__list-item">
+                @Html.DisplayFor(model => model.Station.Id)
+            </dd>
+
+            <dt class="disc__list-title">
+                @Html.DisplayNameFor(model => model.Station.StationName)
+            </dt>
+            <dd class="disc__list-item">
+                @Html.DisplayFor(model => model.Station.StationName)
+            </dd>
+
+            <dt class="disc__list-title">
+                @Html.DisplayNameFor(model => model.Station.Vendor.VendorName)
+            </dt>
+            <dd class="disc__list-item">
+                @Html.DisplayFor(model => model.Station.Vendor.VendorName)
+            </dd>
+
+            <dt class="disc__list-title">
+                @Html.DisplayNameFor(model => model.Station.StationAddress)
+            </dt>
+            <dd class="disc__list-item">
+                @Html.DisplayFor(model => model.Station.StationAddress)
+            </dd>
+
+            <dt class="disc__list-title">
+                @Html.DisplayNameFor(model => model.Station.StationPostcode)
+            </dt>
+            <dd class="disc__list-item">
+                @Html.DisplayFor(model => model.Station.StationPostcode)
+            </dd>
+
+            <dt class="disc__list-title">
+                @Html.DisplayNameFor(model => model.Station.Latitude)
+            </dt>
+            <dd class="disc__list-item">
+                @Html.DisplayFor(model => model.Station.Latitude)
+            </dd>
+
+            <dt class="disc__list-title">
+                @Html.DisplayNameFor(model => model.Station.Longitude)
+            </dt>
+            <dd class="disc__list-item">
+                @Html.DisplayFor(model => model.Station.Longitude)
+            </dd>
+
+            <dt class="disc__list-title">
+                Country
+            </dt>
+            <dd class="disc__list-item">
+                @Model.CountryRequest.CountryName
+            </dd>
+
+            <dt class="disc__list-title">
+                @Html.DisplayNameFor(model => model.Station.StationOnline)
+            </dt>
+            <dd class="disc__list-item">
+                @Html.DisplayFor(model => model.Station.StationOnline)
+            </dd>
+
+            <dt class="disc__list-title">
+                @Html.DisplayNameFor(model => model.Station.Added)
+            </dt>
+            <dd class="disc__list-item">
+                @Html.DisplayFor(model => model.Station.Added)
+            </dd>
+
+            <dt class="disc__list-title">
+                @Html.DisplayNameFor(model => model.Station.StationIdentifier)
+            </dt>
+            <dd class="disc__list-item">
+                @Html.DisplayFor(model => model.Station.StationIdentifier)
+            </dd>
+
+        </dl>
+        <div>
+            <a class="btn btn__small" asp-page="Index">Back to List</a>
+        </div>
+    </div>
+</section>
+

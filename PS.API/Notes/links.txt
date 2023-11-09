@@ -1,0 +1,4 @@
+﻿.NET 6.0 - JWT Authentication with Refresh Tokens Tutorial with Example API
+	https://jasonwatmore.com/net-6-jwt-authentication-with-refresh-tokens-tutorial-with-example-api#:~:text=The%20JWT%20is%20used%20for,or%20just%20before)%20they%20expire.
+Github
+	https://github.com/cornflourblue/dotnet-6-jwt-refresh-tokens-api

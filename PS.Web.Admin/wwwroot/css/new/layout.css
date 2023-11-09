@@ -1,0 +1,49 @@
+﻿/*=============== 
+    1. Shared Css classes.
+    2. Mobile header / Desktop
+    3. Footer
+
+=============================*/
+
+.grid {
+    display: grid;
+}
+
+.flex {
+    display: flex;
+}
+
+.section {
+    padding: 1rem 0 0.5rem; /* 16px 8px*/
+}
+/*main .section{
+    margin-bottom: 80px;
+}*/
+
+.content-container {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.content-container .content-item{
+    flex-direction: column;
+}
+
+.dashboard-grid-wrap {
+    /* 3 columns, 1 fraction of the available
+        space.
+    */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem; /* 24px */
+}
+
+.dashboard-grid-item {
+    background: var(--color-white);
+    padding: var(--card-padding);
+    border-radius: var(--card-border-radius);
+    margin-top: 1rem;
+    box-shadow: var(--box-shadow);
+    transition: all 300ms ease;
+}

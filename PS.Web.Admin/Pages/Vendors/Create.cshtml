@@ -1,0 +1,70 @@
+﻿@page
+@model PS.Web.Admin.Pages.Vendors.CreateModel
+@{
+    ViewData["Title"] = "Add a new vendor";
+}
+
+<section class="section" id="add_vendor">
+    <div class="container flex">
+        <form id="form_add_vendor" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <fieldset class="field__set">
+                <legend class="form__legend">Add a new petrol vendor</legend>
+                <div class="form__margin">
+                    <label asp-for="AddVendorVM.VendorName" class="control-label"></label>
+                    <input asp-for="AddVendorVM.VendorName" class="form__input" placeholder="Vendor name" aria-label="Vendor name" />
+                    <span asp-validation-for="AddVendorVM.VendorName" class="text-danger"></span>
+                </div>
+                <div class="form__margin">
+                    <label asp-for="AddVendorVM.VendorAddress" class="control-label"></label>
+                    <input asp-for="AddVendorVM.VendorAddress" class="form__input" placeholder="Vendor address" aria-label="Vendor address" />
+                    <span asp-validation-for="AddVendorVM.VendorAddress" class="text-danger"></span>
+                </div>
+                <div class="form__margin">
+                    <label asp-for="AddVendorVM.VendorAddress2" class="control-label"></label>
+                    <input asp-for="AddVendorVM.VendorAddress2" class="form__input" placeholder="Address line 2" aria-label="Address line 2" />
+                    <span asp-validation-for="AddVendorVM.VendorAddress2" class="text-danger"></span>
+                </div>
+                <div class="form__margin">
+                    <label asp-for="AddVendorVM.VendorAddress3" class="control-label"></label>
+                    <input asp-for="AddVendorVM.VendorAddress3" class="form__input" placeholder="Address line 3" aria-label="Address line 3" />
+                    <span asp-validation-for="AddVendorVM.VendorAddress3" class="text-danger"></span>
+                </div>
+                <div class="form__margin">
+                    <label asp-for="AddVendorVM.VendorPostcode" class="control-label"></label>
+                    <input asp-for="AddVendorVM.VendorPostcode" class="form__input" placeholder="Postcode" aria-label="Postcode" />
+                    <span asp-validation-for="AddVendorVM.VendorPostcode" class="text-danger"></span>
+                </div>
+                <div class="form__margin">
+                    <label asp-for="AddVendorVM.CountryId" class="control-label"></label>
+                    <select asp-for="AddVendorVM.CountryId" class="form__selectlist" asp-items="new SelectList(Model.AddVendorVM.Countries,
+                    nameof(PS.Core.Models.Country.Id), nameof(PS.Core.Models.Country.CountryName))">
+                        <option>Please Select</option>
+                    </select>
+                    <span asp-validation-for="AddVendorVM.CountryId" class="text-danger"></span>
+                </div>
+                <div class="form__margin">
+                    <label asp-for="AddVendorVM.VendorCode" class="control-label"></label>
+                    <input asp-for="AddVendorVM.VendorCode" class="form__input" placeholder="Unique 4 letter code for this vendor (*Required)" aria-label="Unique 4 lletter code for this vendor" />
+                    <span asp-validation-for="AddVendorVM.VendorCode" class="text-danger"></span>
+                </div>
+                <div class="form__margin">
+                    <input type="submit" valuse="SUBMIT" class="btn btn__default form__button" />
+                </div>
+            </fieldset>
+        </form>
+
+        <div>
+            <a asp-page="Index">Back to List</a>
+        </div>
+
+    </div>
+</section>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

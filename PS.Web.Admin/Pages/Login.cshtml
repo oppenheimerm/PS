@@ -1,0 +1,43 @@
+﻿@page
+@model PS.Web.Admin.Pages.LoginModel
+@{
+	Layout = "_LayoutAuthenticate";
+}
+
+<!-- Container -->
+<div class="container">
+	<!-- Center form -->
+	<div class="center-form">
+		<!-- Form-wrapper ends -->
+		<div class="form-wrapper">
+			<form id="form-login" method="post" autocomplete="on">
+				<span class="frm-title">Welcome</span>
+				<div class="frm-hero-wrap">
+					<img src="~/img/assets/ps-logo-orange.png" alt="PS" />
+				</div>
+				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<fieldset class="field__set">
+					<div class="form__margin">
+						<label class="control-label" aria-required="true">Username</label>
+						<input class="form__input" autocomplete="username" placeholder="Email address" aria-label="Email address" />
+						<span class="text-danger"></span>
+					</div>
+					<div class="form__margin">
+						<label class="control-label" aria-required="true">Password </label>
+						<input class="form__input" autocomplete="current-password" placeholder="Password" aria-label="Password" type="password" />
+						<span class="text-danger"></span>
+					</div>
+					<div class="form__margin">
+						<input type="submit" valuse="SUBMIT" class="btn btn__default form__button" />
+					</div>
+				</fieldset>
+			</form>
+			<div class="frm_links-wrap">
+				<a href="#">Forgot your password?</a>
+			</div>
+		</div>
+		<!-- Form-wrapper ends -->
+	</div>
+	<!-- Center form ends -->
+</div>
+<!-- Container ends -->

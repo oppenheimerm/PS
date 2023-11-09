@@ -1,0 +1,63 @@
+﻿@page
+@model PS.Web.Admin.Pages.Stations.IndexModel
+@{
+    ViewData["Title"] = "View all Stations";
+}
+
+<section class="section" id="all_stations">
+    <div class="allcountries__wrap container flex">
+        <p class="section__label touppersection__label">Stations</p>
+        <a class="page__links" asp-page="./Create">New</a>
+        <table class="table table__middle">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Postcode</th>
+                    <th>Vendor</th>
+                    <th>Country</th>
+                    <th>Added</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Stations)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @item.StationName
+                        </td>
+                        <td>
+                            @item.StationPostcode
+                        </td>
+                        <td>
+                            @item.Vendor.VendorName
+                        </td>
+                        <td>
+                            @item.CountryCode
+                        </td>
+                        <td>
+                            @item.Added.Value.ToString("MM/dd/yyyy")
+                        </td>
+                        <td>
+                            <div class="table__actions-wrap">
+                                <a class="btn btn__small" asp-page="Details" asp-route-id="@item.Id">Details</a>
+
+                                <a class="btn btn__small" asp-page="Edit" asp-route-id="@item.Id">
+                                    Edit
+                                </a>
+                                <a class="btn danger btn__small" asp-page="/admin/deletepost" asp-route-id="@item.Id">
+                                    Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</section>

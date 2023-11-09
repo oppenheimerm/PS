@@ -1,0 +1,65 @@
+﻿@page
+@model PS.Web.Admin.Pages.Employees.IndexModel
+@{
+    ViewData["Title"] = "Employee Directory";
+}
+
+<section class="section" id="all_employees">
+    <div class="employee-directory-wrap container flex">
+        <p class="section__label touppersection__label">Stations</p>
+        <a class="page__links" asp-page="./Create">New</a>
+        <table class="table table__middle">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Initials</th>
+                    <th>Department</th>
+                    <th>Title</th>
+                    <th></th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Employees)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FirstName)
+                        </td>
+                        <td>
+                            @item.LasttName
+                        </td>
+                        <td>
+                            @item.Initials
+                        </td>
+                        <td>
+                            @item.PrimaryDepartment
+                        </td>
+                        <td>
+                            @item.Title
+                        </td>
+                        <td>
+                            <div class="table__img-wrap">
+                                <img src="~/img/assets/profile-pic-1.jpg" >
+                            </div>                            
+                        </td>
+                        <td>
+                            <div class="table__actions-wrap">
+                                <a class="btn btn__small" asp-page="Details" asp-route-id="@item.Id">Details</a>
+
+                                <a class="btn btn__small" asp-page="Edit" asp-route-id="@item.Id">
+                                    Edit
+                                </a>
+                                <a class="btn danger btn__small" asp-page="/admin/deletepost" asp-route-id="@item.Id">
+                                    Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</section>
