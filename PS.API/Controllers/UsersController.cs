@@ -11,7 +11,7 @@ namespace PS.API.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : BaseController
     {
         private readonly IWebApiUserRepository WebApiUserRepository;
 
@@ -20,13 +20,49 @@ namespace PS.API.Controllers
             WebApiUserRepository = webApiUserRepository;
         }
 
+		[AllowAnonymous]
+		[HttpPost("register")]
+		public async Task<ActionResult> Register(RegisterRequest model)
+		{
+			var requestStatus = await WebApiUserRepository.RegisterAsync(model, Request.Headers["origin"]);
+            if(requestStatus.Success)
+            {
+				return Ok(new { message = "Registration successful, please check your email for verification instructions" });
+            }
+            else
+            {
+				return BadRequest(new { message = requestStatus.ErrorMessage });
+			}
+			
+		}
+
+		[AllowAnonymous]
+		[HttpPost("verify-email")]
+		public async Task<IActionResult> VerifyEmail(VerifyEmailRequest model)
+		{
+			var requestStatus = await WebApiUserRepository.VerifyEmailAsync(model.Token);
+            if(requestStatus.Success) {
+                return Ok(new { message = "Verification successful, you can now login" });
+            }
+            else {
+                return BadRequest(new { message = requestStatus.ErrorMessage });
+            } 
+		}
+
         [AllowAnonymous]
         [HttpPost("authenticate")]
         public async Task<IActionResult> Authenticate(AuthenticateRequest model)
         {
             var response = await WebApiUserRepository.LogInAsync(model, ipAddress());
-            setTokenCookie(response.RefreshToken);
-            return Ok(response);
+            if (response.StatusCode == (int)HttpStatusCode.OK)
+            {
+                setTokenCookie(response.RefreshToken);
+                return Ok(response);
+            }
+            else {
+                return Unauthorized(response);
+            }
+        
         }
         
 

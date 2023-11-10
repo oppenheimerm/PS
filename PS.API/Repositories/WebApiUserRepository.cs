@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
 using PS.API.Authorization.Interfaces;
 using PS.API.Exceptions;
 using PS.API.Repositories.Interfaces;
@@ -10,15 +9,22 @@ using PS.Core.Helpers;
 using BC = BCrypt.Net.BCrypt;
 using PS.Core.Models.ApiRequestResponse;
 using System.Net;
-using Microsoft.AspNetCore.Authorization;
-using PS.API.Authorization;
-using Azure;
-using Newtonsoft.Json.Linq;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+
 
 namespace PS.API.Repositories
 {
-    public class WebApiUserRepository : IWebApiUserRepository
+	/*
+     * TODO
+     *  ask RegisterAsync(RegisterRequest model, string origin)
+     *      - https://www.tutorialspoint.com/Chash-program-to-check-the-validity-of-a-Password
+     *  account vefification
+     *      - account.Verified = DateTime.UtcNow;
+     *  send email
+     *      sendVerificationEmail(account, origin);
+     *      
+     * 
+     */
+	public class WebApiUserRepository : IWebApiUserRepository
     {
         private readonly ApplicationDbContext Context;
         private readonly IJwtUtils JwtUtilis;
@@ -36,34 +42,40 @@ namespace PS.API.Repositories
             Logger = logger;
         }
 
-        public async Task RegisterAsync(RegisterRequest model, string origin)
+        public async Task<(bool Success, string ErrorMessage)> RegisterAsync(RegisterRequest model, string origin)
         {
             var memberExist = await Context.Members.SingleOrDefaultAsync(m => m.EmailAddress == model.EmailAddress.ToLower());
             // validate
             if (Context.Members.Any(x => x.EmailAddress == model.EmailAddress.ToLowerInvariant()))
             {
-                //  TODO
-                // send already registered error in email to prevent account enumeration
-                //sendAlreadyRegisteredEmail(model.Email, origin);
-                return;
+				//  TODO
+				// send already registered error in email to prevent account enumeration
+				//sendAlreadyRegisteredEmail(model.Email, origin);
+				//  See: sendAlreadyRegisteredEmail(string email, string origin)
+				return (false, "User already registered");
+            }
+
+            //  Must accept terms
+            if(model.AcceptTerms == false)
+            {
+                return (false, "You must agree to terms in order to register with PetrolSist");
             }
 
             // map model to new account object
             var account = model.ToMember();
 
-            // first registered account is an admin
-            //var isFirstAccount = _context.Accounts.Count() == 0;
-            //account.Role = isFirstAccount ? Role.Admin : Role.User;
+
             account.Created = DateTime.UtcNow;
             var randomString = new RandomStringGenerator();
             account.VerificationToken = randomString.Generate(13);
 
             account.MemberPhoto = "PHOTO";
 
+            // TODO
             //  REMOVE FOR PRODUCTION
-            account.Verified = DateTime.UtcNow;
+            //account.Verified = DateTime.UtcNow;
 
-        //  TODO https://www.tutorialspoint.com/Chash-program-to-check-the-validity-of-a-Password
+            //  TODO https://www.tutorialspoint.com/Chash-program-to-check-the-validity-of-a-Password
 
             // hash password
             account.PasswordHash = BC.HashPassword(model.Password);
@@ -75,6 +87,8 @@ namespace PS.API.Repositories
             //  TODO
             // send email
             //sendVerificationEmail(account, origin);
+
+            return (true, string.Empty);
         }
 
         public async Task<AuthenticateResponse> LogInAsync(AuthenticateRequest model, string ipAddress)
@@ -188,8 +202,36 @@ namespace PS.API.Repositories
             }
         }
 
-        #region helpers
-        private async Task<(Member user, bool Success, string ErrorMessage)> GetUserByRefreshTokenAsync(string token)
+
+		public async Task<(bool Success, string ErrorMessage)> VerifyEmailAsync(string token)
+		{
+            if (token == null)
+            {
+                var error = $"Faild validation no token found. TimeStamp: {DateTime.UtcNow}";
+				Logger.LogError(error);
+                return (false, $"Faild validation no token found. TimeStamp: {DateTime.UtcNow}");
+            }
+
+			var account = await Context.Members.SingleOrDefaultAsync(x => x.VerificationToken == token);
+
+            if (account == null)
+            {
+                var error = $"Account verification failed. TimeStamp: {DateTime.UtcNow}";
+				Logger.LogError(error);
+                return(false, error);
+			}
+
+			account.Verified = DateTime.UtcNow;
+			account.VerificationToken = string.Empty;
+
+			Context.Members.Update(account);
+			await Context.SaveChangesAsync();
+            var msg = $"Succesfuly validated account. TimeStamp: {DateTime.UtcNow}";
+            return (true, msg);
+		}
+
+		#region helpers
+		private async Task<(Member user, bool Success, string ErrorMessage)> GetUserByRefreshTokenAsync(string token)
         {
             var user = await Context.Members.SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token == token));
 
@@ -266,12 +308,25 @@ namespace PS.API.Repositories
             };
         }
 
-        public Task RevokeTokenAsync(string token, string ipAddress)
-        {
-            throw new NotImplementedException();
-        }
+        //  TODO - Add MailService
+		/*private void sendAlreadyRegisteredEmail(string email, string origin)
+		{
+			string message;
+			if (!string.IsNullOrEmpty(origin))
+				message = $@"<p>If you don't know your password please visit the <a href=""{origin}/account/forgot-password"">forgot password</a> page.</p>";
+			else
+				message = "<p>If you don't know your password you can reset it via the <code>/accounts/forgot-password</code> api route.</p>";
 
-        #endregion
-    }
+			_emailService.Send(
+				to: email,
+				subject: "Sign-up Verification API - Email Already Registered",
+				html: $@"<h4>Email Already Registered</h4>
+                        <p>Your email <strong>{email}</strong> is already registered.</p>
+                        {message}"
+			);
+		}*/
+
+		#endregion
+	}
 }
 
