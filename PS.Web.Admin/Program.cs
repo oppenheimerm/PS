@@ -10,6 +10,7 @@ using PS.UseCases.EmployeeUseCase;
 using PS.UseCases.Interfaces;
 using PS.UseCases.PetrolStationUseCase;
 using PS.UseCases.VendorUseCase;
+using PS.Web.Admin.Hubs;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -106,6 +107,9 @@ builder.Services.AddTransient<IAddEmployeeObjectUseCase, AddEmployeeObjectUseCas
 //builder.Services.AddTransient<,>();
 
 
+builder.Services.AddSignalR();
+
+
 
 var app = builder.Build();
 
@@ -159,5 +163,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
+
+app.MapHub<NotificationHub>("/notificationHub");
 
 app.Run();
