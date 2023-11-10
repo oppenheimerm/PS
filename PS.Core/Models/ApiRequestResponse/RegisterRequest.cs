@@ -6,7 +6,7 @@ namespace PS.Core.Models.ApiRequestResponse
     {
         [Required]
         [StringLength(7)]
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "First name field is required")]
         [StringLength(30)]
