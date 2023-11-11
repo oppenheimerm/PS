@@ -15,6 +15,7 @@
                     <th>Name</th>
                     <th>Vendor Code</th>
                     <th>Country</th>
+                    <th>Logo</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -33,6 +34,12 @@
                         </td>
                         <td>
                             @item.Country.CountryName
+                        </td>
+                        <td>
+                            <img src="@VendorLogoHelper.GetVendorLogo(
+                                            @item.Logo, 
+                                            VendorLogoSize.Medium, 
+                                            PS.Core.Helpers.Constants.VendorLogoUrlPrefix)" asp-append-version="true">
                         </td>
                         <td>
                             <div class="table__actions-wrap">

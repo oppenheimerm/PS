@@ -1,9 +1,11 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PS.Core.Helpers;
 using PS.Core.Models;
 using PS.Core.Models.ApiRequestResponse;
 using PS.Datastore.EFCore.Interfaces;
+using System;
 using System.Numerics;
 
 namespace PS.Datastore.EFCore.Repositories
@@ -59,7 +61,8 @@ namespace PS.Datastore.EFCore.Repositories
                             Longitude = station.Longitude,
                             StationOnline = station.StationOnline,
                             VendorName = vendor.VendorName,
-                            Country = country.CountryName
+                            Country = country.CountryName,
+                            Logos = GetLogosForVendor(vendor.Logo)
                         };
             //
             query.OrderBy(s => s.StationName);
@@ -73,5 +76,37 @@ namespace PS.Datastore.EFCore.Repositories
                 .Include(v => v.Vendor)
                 .AsNoTracking().FirstOrDefaultAsync(s => s.Id == id);
         }
+
+        private static List<string>GetLogosForVendor(string logoName)
+        {
+
+			List<string> Logos = new List<string>();
+
+			var ExtraSmall = VendorLogoHelper.GetVendorLogo(
+                logoName,
+                VendorLogoSize.ExtraSmall,
+                PS.Core.Helpers.Constants.VendorLogoUrlPrefix);
+            Logos.Add(ExtraSmall);
+
+			var Small = VendorLogoHelper.GetVendorLogo(
+				logoName,
+				VendorLogoSize.Small,
+				PS.Core.Helpers.Constants.VendorLogoUrlPrefix);
+			Logos.Add(Small);
+
+			var Medium = VendorLogoHelper.GetVendorLogo(
+				logoName,
+				VendorLogoSize.Medium,
+				PS.Core.Helpers.Constants.VendorLogoUrlPrefix);
+			Logos.Add(Medium);
+
+			var Large = VendorLogoHelper.GetVendorLogo(
+				logoName,
+				VendorLogoSize.Large,
+				PS.Core.Helpers.Constants.VendorLogoUrlPrefix);
+			Logos.Add(Large);
+
+            return Logos;
+		}
     }
 }

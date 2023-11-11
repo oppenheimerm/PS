@@ -16,4 +16,10 @@ namespace PS.Core.Helpers
         Miss, 
         Dr 
     }
+
+    public static class Constants
+    {
+		public const string VendorLogoUrlPrefix = "~/img/assets/vendorLogos/";
+	}
+    
 }
