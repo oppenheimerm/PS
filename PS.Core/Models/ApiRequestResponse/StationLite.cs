@@ -28,5 +28,6 @@ namespace PS.Core.Models.ApiRequestResponse
         public string Country { get; set; } = string.Empty; 
         public bool PayByApp { get; set;} = false;
         public bool PayAtPump { get; set; } = false;
+        public List<string>? Logos { get; set; }
     }
 }

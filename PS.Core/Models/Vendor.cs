@@ -48,6 +48,8 @@ namespace PS.Core.Models
         [StringLength(4, MinimumLength = 4)]
         public string VendorCode { get; set; } = string.Empty;
 
+		[StringLength(40)]
+		public string? VendorLogo { get; set;}
         public ICollection<Station>? Stations { get; set; }
     }
 }

@@ -132,10 +132,10 @@ namespace PS.Datastore.EFCore
             context.SaveChanges();
 
             var vendors = new Vendor[] {
-                new Vendor { VendorName = "ASDA Petrol", VendorAddress = "Asda House South Bank Great Wilson Street Leeds", VendorAddress2 = "", VendorPostcode = "LS11 5AD", CountryId = 1, Logo = string.Empty, VendorCode = "ASDA" },
-                new Vendor { VendorName = "Shell UK", VendorAddress = "Shell Centre London", VendorAddress2 = "", VendorPostcode = "SE1 7NA", CountryId = 1, Logo = string.Empty, VendorCode = "SHUK" },
-                new Vendor { VendorName = "BP UK", VendorAddress = "1 St James's Square, St. James's, London", VendorAddress2 = "", VendorPostcode = "SW1Y 4PD", CountryId = 1, Logo = string.Empty, VendorCode = "BPUK" },
-                new Vendor { VendorName = "Texaco UK", VendorAddress = "Va​lero Energy Ltd 1 Canada Square​ London", VendorAddress2 = "", VendorPostcode = "E14 5AA", CountryId = 1, Logo = string.Empty, VendorCode = "TXUK" },
+                new Vendor { VendorName = "ASDA Petrol", VendorAddress = "Asda House South Bank Great Wilson Street Leeds", VendorAddress2 = "", VendorPostcode = "LS11 5AD", CountryId = 1, Logo = string.Empty, VendorCode = "ASDA", VendorLogo = "asda" },
+                new Vendor { VendorName = "Shell UK", VendorAddress = "Shell Centre London", VendorAddress2 = "", VendorPostcode = "SE1 7NA", CountryId = 1, Logo = string.Empty, VendorCode = "SHUK", VendorLogo = "shell" },
+                new Vendor { VendorName = "BP UK", VendorAddress = "1 St James's Square, St. James's, London", VendorAddress2 = "", VendorPostcode = "SW1Y 4PD", CountryId = 1, Logo = string.Empty, VendorCode = "BPUK", VendorLogo = "bp" },
+                new Vendor { VendorName = "Texaco UK", VendorAddress = "Va​lero Energy Ltd 1 Canada Square​ London", VendorAddress2 = "", VendorPostcode = "E14 5AA", CountryId = 1, Logo = string.Empty, VendorCode = "TXUK", VendorLogo = "texaco" },
             };
 
             context.PetrolVendors.AddRange(vendors);
