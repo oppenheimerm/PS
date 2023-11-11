@@ -90,6 +90,7 @@
 
                     <a href="#">
                         <span class="material-symbols-sharp">
+
                             dashboard
                         </span>
                         <h3>Dashboard</h3>
@@ -142,6 +143,7 @@
             </aside>
             <!-- Main -->
             <main>
+                @RenderSection("BreadCrumb", required: false)
                 @RenderBody()       
             </main>
             <!-- Main Ends -->
