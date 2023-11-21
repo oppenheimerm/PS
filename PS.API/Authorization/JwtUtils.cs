@@ -24,21 +24,6 @@ namespace PS.API.Authorization
             Logger = logger;
         }
 
-        public string GenerateJwtToken(Member user)
-        {
-            // generate token that is valid for 15 minutes
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(Configuration["WebApiSecurity:Secret"]);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
-                Expires = DateTime.UtcNow.AddMinutes(15),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
-
         public Guid? ValidateJwtToken(string token)
         {
             if (token == null)
@@ -64,13 +49,29 @@ namespace PS.API.Authorization
                 // return user id from JWT token if validation successful
                 return userId;
             }
-            catch(SecurityTokenExpiredException err)
+            catch (SecurityTokenExpiredException err)
             {
                 // return null if validation fails
                 Logger.LogError($"Failed to validate JwtToken: {err.ToString()} at {DateTime.UtcNow}");
                 return null;
             }
         }
+
+        public string GenerateJwtToken(Member user)
+        {
+            // generate token that is valid for 15 minutes
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(Configuration["WebApiSecurity:Secret"]);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
+                Expires = DateTime.UtcNow.AddMinutes(double.Parse(Configuration["WebApiSecurity:LoginTokenTTL"])),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
+
 
         public async Task<RefreshToken> GenerateRefreshTokenAsync(string ipAddress)
         {

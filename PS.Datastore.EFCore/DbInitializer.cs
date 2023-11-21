@@ -151,6 +151,10 @@ namespace PS.Datastore.EFCore
                 new Station { StationName = "Texaco Grove Road", StationAddress = "51, 53 Grove Rd., Bow, London", StationAddress2 = "", StationPostcode = "E3 5DU", Latitude = 51.52735149999999, Longitude = -0.036384, VendorId = 4, CountryId = 1},
                 new Station { StationName = "BP", StationAddress = "102-106 The Hwy, London", StationAddress2 = "", StationPostcode = "E1W 2BU", Latitude = 51.5092828, Longitude = -0.06055000000000001, VendorId = 3, CountryId = 1},
                 new Station { StationName = "Texaco", StationAddress = "241 City Rd, London", StationAddress2 = "", StationPostcode = "EC1V 1JQ", Latitude = 51.5297989, Longitude = -0.0948134, VendorId = 4, CountryId = 1},
+                new Station { StationName = "Asda Old Kent Road Superstore", StationAddress = "Parking lot, 464 - 504 Olmar St, London", StationAddress2 = "", StationPostcode = "SE1 5AY", Latitude = 51.483714, Longitude = -0.0690958, VendorId = 1, CountryId = 1},
+                new Station { StationName = "Shell High St, Old Woking", StationAddress = "65 High St, Old Woking, Woking ", StationAddress2 = "", StationPostcode = "GU22 9LN", Latitude = 51.3023991, Longitude = -0.5453992, VendorId = 2, CountryId = 1},
+                new Station { StationName = "Asda Woking Sheerwater Superstore", StationAddress = "Forsyth Rd, Sheerwater Woking", StationAddress2 = "", StationPostcode = "GU21 5SE", Latitude = 51.3193734, Longitude = -0.5800787, VendorId = 1, CountryId = 1},
+                new Station { StationName = "Shell  48 Victoria Rd", StationAddress = "48 Victoria Rd, Glasgow", StationAddress2 = "", StationPostcode = "G42 7AA", Latitude = 55.8411979, Longitude = -4.2633713, VendorId = 2, CountryId = 2},
             };
             context.PetrolStations.AddRange(stations);
             context.SaveChanges();
