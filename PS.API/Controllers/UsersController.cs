@@ -70,10 +70,23 @@ namespace PS.API.Controllers
         [HttpPost("refresh-token")]
         public async Task<ActionResult<AuthenticateResponse>> RefreshToken()
         {
+            
             var refreshToken = Request.Cookies["refreshToken"];
             var response = await WebApiUserRepository.RefreshTokenAsync(refreshToken, ipAddress());
             setTokenCookie(response.RefreshToken);
             return Ok(response);
+
+
+            /*string refreshToken = string.Empty;
+            var refreshTokenCookie = Request.Cookies["refreshToken"];
+            var refreshTokenHeader = Request.Headers["refreshToken"];
+
+            refreshToken = refreshTokenCookie ?? refreshTokenHeader;*/
+
+
+            /*var response = await WebApiUserRepository.RefreshTokenAsync(refreshToken, ipAddress());
+            setTokenCookie(response.RefreshToken);
+            return Ok(response);*/
         }
 
         #region Helpers

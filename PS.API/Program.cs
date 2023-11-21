@@ -14,6 +14,7 @@ using PS.API.Authorization.MiddleWare;
 using PS.API.Filters;
 using Microsoft.OpenApi.Models;
 using System.Security.Policy;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -139,7 +140,23 @@ app.UseSwaggerUI(options =>
 
 });
 
+// Enable directory browsing
 app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions()
+{
+    FileProvider = new PhysicalFileProvider(
+    Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\img\logos")),
+    RequestPath = new PathString("/img/logos")
+});
+
+app.UseDirectoryBrowser(new DirectoryBrowserOptions()
+{
+    FileProvider = new PhysicalFileProvider(
+    Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\img\logos")),
+    RequestPath = new PathString("/img/logos")
+});
+
+
 
 // configure HTTP request pipeline
 {

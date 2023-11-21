@@ -1,5 +1,6 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace PS.Core.Models.ApiRequestResponse
 {
@@ -29,5 +30,7 @@ namespace PS.Core.Models.ApiRequestResponse
         public bool PayByApp { get; set;} = false;
         public bool PayAtPump { get; set; } = false;
         public List<string>? Logos { get; set; }
+        [JsonIgnore]
+        public string Logo { get; set; } = string.Empty;
     }
 }

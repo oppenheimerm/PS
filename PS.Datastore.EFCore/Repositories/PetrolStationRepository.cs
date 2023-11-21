@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PS.Core.Helpers;
@@ -14,11 +15,13 @@ namespace PS.Datastore.EFCore.Repositories
     {
         private readonly ILogger<PetrolStationRepository> Logger;
         private readonly ApplicationDbContext Context;
+        private readonly IWebHostEnvironment WebHostEnvironment;
 
-        public PetrolStationRepository(ILogger<PetrolStationRepository> logger, ApplicationDbContext context)
+        public PetrolStationRepository(ILogger<PetrolStationRepository> logger, ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             Logger = logger;
             Context = context;
+            WebHostEnvironment = webHostEnvironment;
         }
 
         public async Task<(Station station, bool Success, string ErrorMessage)> Add(Station station)
@@ -62,7 +65,7 @@ namespace PS.Datastore.EFCore.Repositories
                             StationOnline = station.StationOnline,
                             VendorName = vendor.VendorName,
                             Country = country.CountryName,
-                            Logos = GetLogosForVendor(vendor.Logo)
+                            Logo = vendor.Logo
                         };
             //
             query.OrderBy(s => s.StationName);
@@ -77,21 +80,28 @@ namespace PS.Datastore.EFCore.Repositories
                 .AsNoTracking().FirstOrDefaultAsync(s => s.Id == id);
         }
 
-        private static List<string>GetLogosForVendor(string logoName)
+        /*private static List<string>GetLogosForVendor(string logoName)
         {
+            // "C:\\Users\\moppenheimer\\repo\\web\\PS\\PS.API\\asdaasda_logo_40_x_40.jpg",
+            List<string> Logos = new List<string>();
 
-			List<string> Logos = new List<string>();
 
-			var ExtraSmall = VendorLogoHelper.GetVendorLogo(
+            //var imagePath= Path.Combine(Directory.GetCurrentDirectory(), "Images", fileName);
+
+            var basePath = Path.Combine(WebHostEnvironment.WebRootPath, "img", "logos"); 
+
+            //"~/img/assets/vendorLogos/asda_logo_40_x_40.jpg",
+
+            var ExtraSmall = VendorLogoHelper.GetVendorLogo(
                 logoName,
                 VendorLogoSize.ExtraSmall,
-                PS.Core.Helpers.Constants.VendorLogoUrlPrefix);
+                basePath);
             Logos.Add(ExtraSmall);
 
 			var Small = VendorLogoHelper.GetVendorLogo(
 				logoName,
 				VendorLogoSize.Small,
-				PS.Core.Helpers.Constants.VendorLogoUrlPrefix);
+                basePath);
 			Logos.Add(Small);
 
 			var Medium = VendorLogoHelper.GetVendorLogo(
@@ -107,6 +117,6 @@ namespace PS.Datastore.EFCore.Repositories
 			Logos.Add(Large);
 
             return Logos;
-		}
+		}*/
     }
 }
