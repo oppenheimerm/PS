@@ -11,6 +11,6 @@ namespace PS.API.Controllers
 		/// <summary>
 		/// Reutns the current authenticated account(<see cref="Member"/>) (null if not logged in
 		/// </summary>
-		public Member Account => HttpContext.Items["Account"] as Member;
+		public Member? Account => HttpContext.Items["Account"] as Member;
 	}
 }

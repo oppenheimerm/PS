@@ -15,6 +15,8 @@ using PS.API.Filters;
 using Microsoft.OpenApi.Models;
 using System.Security.Policy;
 using Microsoft.Extensions.FileProviders;
+using Asp.Versioning;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +47,12 @@ builder.Services.AddCors();
 builder.Services.AddControllers()
     .AddJsonOptions(x => x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull);
 
+builder.Services.AddApiVersioning(x =>
+{
+	x.DefaultApiVersion = new ApiVersion(1, 0);
+	x.AssumeDefaultVersionWhenUnspecified = true;
+	x.ReportApiVersions = true;
+});
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -70,8 +78,13 @@ builder.Services.AddSwaggerGen(options =>
             Name = "Example License",
             Url = new Uri("https://example.com/license")
         }
-    }); //https://www.c-sharpcorner.com/article/how-to-add-jwt-bearer-token-authorization-functionality-in-swagger/
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    });
+	// using System.Reflection;
+	var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+	options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+
+	//https://www.c-sharpcorner.com/article/how-to-add-jwt-bearer-token-authorization-functionality-in-swagger/
+	options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
     {
         Name = "Authorization",
         Type = SecuritySchemeType.ApiKey,
