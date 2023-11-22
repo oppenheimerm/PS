@@ -1,15 +1,21 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PS.API.Repositories.Interfaces;
 using PS.Core.Models.ApiRequestResponse;
 using System.Net;
 
-namespace PS.API.Controllers
+namespace PS.API.Controllers.V1
 {
-    //  Base account controller: https://github.com/cornflourblue/aspnet-core-3-signup-verification-api/blob/master/Controllers/BaseController.cs
-    [Authorize]
-    [Route("api/[controller]")]
+	//  Base account controller: https://github.com/cornflourblue/aspnet-core-3-signup-verification-api/blob/master/Controllers/BaseController.cs
+	//
+	//  URL based Versioning
+	// Versioning call as normal or: https://localhost:44381/api/users?api-version=1.0
+	[Authorize]
+	[ApiVersion("1.0")]
+	[Route("api/{v:apiVersion}/users")]
+	//[Route("api/[controller]")]
     [ApiController]
     public class UsersController : BaseController
     {
@@ -20,35 +26,55 @@ namespace PS.API.Controllers
             WebApiUserRepository = webApiUserRepository;
         }
 
-		[AllowAnonymous]
-		[HttpPost("register")]
-		public async Task<ActionResult> Register(RegisterRequest model)
-		{
-			var requestStatus = await WebApiUserRepository.RegisterAsync(model, Request.Headers["origin"]);
-            if(requestStatus.Success)
+        /// <summary>
+        /// Register as a user on the PetrolSist application.  It takes a <see cref="RegisterRequest"/>
+        /// parameter
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public async Task<ActionResult> Register(RegisterRequest model)
+        {
+            var requestStatus = await WebApiUserRepository.RegisterAsync(model, Request.Headers["origin"]);
+            if (requestStatus.Success)
             {
-				return Ok(new { message = "Registration successful, please check your email for verification instructions" });
+                return Ok(new { message = "Registration successful, please check your email for verification instructions" });
             }
             else
             {
-				return BadRequest(new { message = requestStatus.ErrorMessage });
-			}
-			
-		}
+                return BadRequest(new { message = requestStatus.ErrorMessage });
+            }
 
-		[AllowAnonymous]
-		[HttpPost("verify-email")]
-		public async Task<IActionResult> VerifyEmail(VerifyEmailRequest model)
-		{
-			var requestStatus = await WebApiUserRepository.VerifyEmailAsync(model.Token);
-            if(requestStatus.Success) {
+        }
+
+        /// <summary>
+        /// On registering, a user must verfiy their email is an valid email address.  This method
+        /// takes a <see cref="VerifyEmailRequest"/> parameter
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost("verify-email")]
+        public async Task<IActionResult> VerifyEmail(VerifyEmailRequest model)
+        {
+            var requestStatus = await WebApiUserRepository.VerifyEmailAsync(model.Token);
+            if (requestStatus.Success)
+            {
                 return Ok(new { message = "Verification successful, you can now login" });
             }
-            else {
+            else
+            {
                 return BadRequest(new { message = requestStatus.ErrorMessage });
-            } 
-		}
+            }
+        }
 
+        /// <summary>
+        /// This the method to call to login a <see cref="VerifyEmailRequest"/> account.
+        /// It takes a <see cref="AuthenticateRequest"/>
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("authenticate")]
         public async Task<IActionResult> Authenticate(AuthenticateRequest model)
@@ -59,18 +85,25 @@ namespace PS.API.Controllers
                 setTokenCookie(response.RefreshToken);
                 return Ok(response);
             }
-            else {
+            else
+            {
                 return Unauthorized(response);
             }
-        
-        }
-        
 
-        [AllowAnonymous]
+        }
+
+		/// <summary>
+		/// Method to handle user's refresh token request.  This takes
+		/// a httpCookie with the refresh token in the header after a user
+		/// has been authenticated with the <see cref="Authenticate"/>
+        /// method
+		/// </summary>
+		/// <returns></returns>
+		[AllowAnonymous]
         [HttpPost("refresh-token")]
         public async Task<ActionResult<AuthenticateResponse>> RefreshToken()
         {
-            
+
             var refreshToken = Request.Cookies["refreshToken"];
             var response = await WebApiUserRepository.RefreshTokenAsync(refreshToken, ipAddress());
             setTokenCookie(response.RefreshToken);
@@ -103,7 +136,7 @@ namespace PS.API.Controllers
         /// Helper method appends an HTTP Only cookie containing the refresh token to the response for 
         /// increased security. HTTP Only cookies are not accessible to client-side javascript which 
         /// prevents XSS (cross site scripting), and the refresh token can only be used to fetch a 
-        /// new token from the <see cref="UsersController.RefreshToken"/> route which prevents 
+        /// new token from the <see cref="RefreshToken"/> route which prevents 
         /// CSRF (cross site request forgery).
         /// </summary>
         /// <param name="token"></param>

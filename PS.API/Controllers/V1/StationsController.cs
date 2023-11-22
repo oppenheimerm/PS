@@ -1,14 +1,19 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PS.Core.Helpers;
 using PS.Core.Models.ApiRequestResponse;
 using PS.UseCases.Interfaces;
 
-namespace PS.API.Controllers
+namespace PS.API.Controllers.V1
 {
+    /// <summary>
+    /// Manages all request for Station data.  User must be authenticated
+    /// </summary>
     [Route("api/[controller]")]
-    [ApiController]
-    [PS.API.Authorization.Attributes.Authorize]
+	[ApiVersion("1.0")]
+	[ApiController]
+    [Authorization.Attributes.Authorize]
     public class StationsController : BaseController
     {
         //public IList<Station> Stations { get; set; } = default!;
@@ -21,7 +26,10 @@ namespace PS.API.Controllers
             WebHostingEnvironment = webHostingEnvironment;
         }
 
-        // GET: api/Stations
+        /// <summary>
+        /// Get all Stations <see cref="StationLite"/>
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public List<StationLite> GetStations()
         {
@@ -30,7 +38,7 @@ namespace PS.API.Controllers
             return stations;
         }
 
-        private List<string> GetLogosForStation( string logo)
+        private List<string> GetLogosForStation(string logo)
         {
             //"C:\\Users\\moppenheimer\\repo\\web\\PS\\PS.API\\wwwroot\\img\\logosasda_logo_80_x_80.jpg",
             //var path2 = $"/img/logos/{}";
