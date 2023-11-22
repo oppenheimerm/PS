@@ -21,14 +21,6 @@ namespace PS.Core.Models
         [Display(Name = "Address")]
         public string VendorAddress { get; set; } = string.Empty;
 
-        [StringLength(200)]
-        [Display(Name = "Address2")]
-        public string? VendorAddress2 { get; set; } = string.Empty;
-        
-        [StringLength(200)]
-        [Display(Name = "Address3")]
-        public string? VendorAddress3 { get; set; } = string.Empty;
-
 
 		[Required]
         [StringLength(25)]
