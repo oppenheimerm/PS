@@ -31,6 +31,11 @@
                     <span asp-validation-for="AddVendorVM.VendorAddress3" class="text-danger"></span>
                 </div>
                 <div class="form__margin">
+                    <label asp-for="AddVendorVM.Logo" class="control-label"></label>
+                    <input asp-for="AddVendorVM.Logo" class="form__input" placeholder="Logo(without extension)" aria-label="Logo" />
+                    <span asp-validation-for="AddVendorVM.Logo" class="text-danger"></span>
+                </div>
+                <div class="form__margin">
                     <label asp-for="AddVendorVM.VendorPostcode" class="control-label"></label>
                     <input asp-for="AddVendorVM.VendorPostcode" class="form__input" placeholder="Postcode" aria-label="Postcode" />
                     <span asp-validation-for="AddVendorVM.VendorPostcode" class="text-danger"></span>

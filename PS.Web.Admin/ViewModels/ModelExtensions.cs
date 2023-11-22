@@ -37,12 +37,11 @@ namespace PS.Web.Admin.ViewModels
                 return new Vendor
                 {
                     VendorName = vm.VendorName,
-                    VendorAddress = vm.VendorAddress,
-                    VendorAddress2 = vm.VendorAddress2,
-                    VendorAddress3 = vm.VendorAddress3,
+                    VendorAddress = vm.VendorAddress,                    
                     VendorPostcode = vm.VendorPostcode,
                     CountryId = vm.CountryId,
                     VendorCode = vm.VendorCode.ToUpperInvariant(),
+                    Logo = vm.Logo
                 };
             }
         }

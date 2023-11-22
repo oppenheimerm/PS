@@ -39,5 +39,7 @@ namespace PS.Web.Admin.ViewModels
         [Required]
 		[StringLength(4, MinimumLength = 4)]
 		public string VendorCode { get; set; } = string.Empty;
+
+		public string? Logo { get; set; } = string.Empty;
 	}
 }

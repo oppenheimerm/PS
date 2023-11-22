@@ -15,10 +15,10 @@ namespace PS.Core.Helpers
         {
             logoName = size switch
             {
-                VendorLogoSize.ExtraSmall => logoName + "_logo_40_x_40.jpg",
-                VendorLogoSize.Small => logoName + "_logo_80_x_80.jpg",
-                VendorLogoSize.Medium => logoName + "_logo_100_x_100.jpg",
-                VendorLogoSize.Large => logoName + "_logo_200_x_200.jpg",
+                VendorLogoSize.ExtraSmall => Constants.VendorLogoUrlPrefix + logoName + "_logo_40_x_40.jpg",
+                VendorLogoSize.Small => Constants.VendorLogoUrlPrefix + logoName + "_logo_80_x_80.jpg",
+                VendorLogoSize.Medium => Constants.VendorLogoUrlPrefix + logoName + "_logo_100_x_100.jpg",
+                VendorLogoSize.Large => Constants.VendorLogoUrlPrefix + logoName + "_logo_200_x_200.jpg",
                 _ => throw new InvalidOperationException(),
             };
 
