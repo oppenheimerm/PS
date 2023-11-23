@@ -8,12 +8,12 @@ using System.Net;
 
 namespace PS.API.Controllers.V1
 {
-	//  Base account controller: https://github.com/cornflourblue/aspnet-core-3-signup-verification-api/blob/master/Controllers/BaseController.cs
-	//
-	//  URL based Versioning
-	// Versioning call as normal or: https://localhost:44381/api/users?api-version=1.0
-	[Authorize]
-	[ApiVersion("1.0")]
+    //  Base account controller: https://github.com/cornflourblue/aspnet-core-3-signup-verification-api/blob/master/Controllers/BaseController.cs
+    //
+    //  URL based Versioning
+    // Versioning call as normal or: https://localhost:44381/api/users?api-version=1.0
+    [Authorization.Attributes.Authorize]
+    [ApiVersion("1.0")]
 	[Route("api/{v:apiVersion}/users")]
 	//[Route("api/[controller]")]
     [ApiController]

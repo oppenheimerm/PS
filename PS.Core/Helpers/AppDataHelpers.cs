@@ -19,7 +19,7 @@ namespace PS.Core.Helpers
 
     public static class Constants
     {
-		public const string VendorLogoUrlPrefix = "~/img/assets/vendorLogos/";
+		public const string VendorLogoUrlPrefix = "/img/logos/";
 	}
     
 }
