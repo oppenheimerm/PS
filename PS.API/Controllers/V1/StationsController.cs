@@ -12,10 +12,10 @@ namespace PS.API.Controllers.V1
     /// <summary>
     /// Manages all request for Station data.  User must be authenticated
     /// </summary>
-    [Route("api/[controller]")]
-	[ApiVersion("1.0")]
-	[ApiController]
     [Authorization.Attributes.Authorize]
+    [ApiVersion("1.0")]
+    [Route("api/{v:apiVersion}/stations")]
+    [ApiController]
     public class StationsController : BaseController
     {
         //public IList<Station> Stations { get; set; } = default!;
@@ -31,38 +31,24 @@ namespace PS.API.Controllers.V1
             GetAllStationNearLatLongPoint = iGetAllStationNearLatLongPoint;    
         }
 
-        /// <summary>
-        /// Get all Stations <see cref="StationLite"/>
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        /*public List<StationLite> GetStations()
-        {
-            var query = GetAllPetrolStationsFlatUseCase.Execute().ToList();
-            var stations = GetStationLogos(query);
-            return stations;
-        }*/
-
-        [HttpGet("statios-nearby")]
-        public List<StationLite>GetNearbayStation(double fromLat, double fromLongt, int countryId,
+        [HttpGet("nearby-stations")]
+        public GetNearestStationsResponse NearbyStations(double fromLat, double fromLongt, int countryId,
             DistanceUnit units, [FromQuery] PagingParameters pagingParms)
         {
+
+            var response = new GetNearestStationsResponse();
             var query = GetAllStationNearLatLongPoint.Execute(fromLat, fromLongt, countryId, units, pagingParms);
-            var stations = GetStationLogos(query);
 
-            var metadata = new
-            {
-                stations.TotalCount,
-                stations.PageSize,
-                stations.CurrentPage,
-                stations.TotalPages,
-                stations.HasNext,
-                stations.HasPrevious
-            };
+            response.Stations = GetStationLogos(query);
+            response.TotalCount = query.TotalCount;
+            response.PageSize = query.PageSize;
+            response.CurrentPage = query.CurrentPage;
+            response.TotalPages = query.TotalPages;
+            response.HasNext = query.HasNext;
+            response.HasPrevious = query.HasPrevious;
 
-            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-            return stations.OrderBy( s => s.Distance).ToList();
+            return response;
 
         }
 
@@ -74,16 +60,16 @@ namespace PS.API.Controllers.V1
             List<string> Logos = new List<string>();
             //var basePath = Path.Combine(WebHostingEnvironment.WebRootPath, "img", "logos");
 
-            var ExtraSmall = $"/img/logos/{VendorLogoHelper.GetVendorLogo(logo, VendorLogoSize.ExtraSmall)}";
+            var ExtraSmall = $"{VendorLogoHelper.GetVendorLogo(logo, VendorLogoSize.ExtraSmall)}";
             Logos.Add(ExtraSmall);
 
-            var Small = $"/img/logos/{VendorLogoHelper.GetVendorLogo(logo, VendorLogoSize.Small)}";
+            var Small = $"{VendorLogoHelper.GetVendorLogo(logo, VendorLogoSize.Small)}";
             Logos.Add(Small);
 
-            var Medium = $"/img/logos/{VendorLogoHelper.GetVendorLogo(logo, VendorLogoSize.Medium)}";
+            var Medium = $"{VendorLogoHelper.GetVendorLogo(logo, VendorLogoSize.Medium)}";
             Logos.Add(Medium);
 
-            var Large = $"/img/logos/{VendorLogoHelper.GetVendorLogo(logo, VendorLogoSize.Large)}";
+            var Large = $"{VendorLogoHelper.GetVendorLogo(logo, VendorLogoSize.Large)}";
             return Logos;
         }
 
