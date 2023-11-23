@@ -1,7 +1,6 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using PS.Core.Helpers;
 using PS.Core.Helpers.Paging;
 using PS.Core.Models.ApiRequestResponse;
@@ -28,7 +27,7 @@ namespace PS.API.Controllers.V1
         {
             GetAllPetrolStationsFlatUseCase = getAllPetrolStationsFlatUseCase;
             WebHostingEnvironment = webHostingEnvironment;
-            GetAllStationNearLatLongPoint = iGetAllStationNearLatLongPoint;    
+            GetAllStationNearLatLongPoint = iGetAllStationNearLatLongPoint;
         }
 
         [HttpGet("nearby-stations")]
