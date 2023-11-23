@@ -1,13 +1,15 @@
 ﻿
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PS.Core.Helpers;
 using PS.Core.Models;
 using PS.Core.Models.ApiRequestResponse;
+using PS.Datastore.EFCore.Helpers.Geospatial;
 using PS.Datastore.EFCore.Interfaces;
-using System;
-using System.Numerics;
+using PS.Core.Helpers.Paging;
+using static System.Collections.Specialized.BitVector32;
 
 namespace PS.Datastore.EFCore.Repositories
 {
@@ -48,6 +50,54 @@ namespace PS.Datastore.EFCore.Repositories
             return stations;
         }
 
+        public PagedList<StationLite> GetAllStationsNearLocation(double fromLat, double fromLongt, int countryId, 
+            DistanceUnit units, [FromQuery] PagingParameters pagingParms)
+        {
+            var query = from station in Context.PetrolStations
+                        join country in Context.Countries on station.CountryId equals country.Id
+                        join vendor in Context.PetrolVendors on station.VendorId equals vendor.Id
+                        where country.Id == countryId
+                        select new StationLite
+                        {
+                            Id = station.Id,
+                            StationName = station.StationName,
+                            StationAddress = station.StationAddress,
+                            StationAddress2 = station.StationAddress2,
+                            StationPostcode = station.StationPostcode,
+                            Latitude = station.Latitude,
+                            Longitude = station.Longitude,
+                            StationOnline = station.StationOnline,
+                            VendorName = vendor.VendorName,
+                            Country = country.CountryName,
+                            Logo = vendor.Logo
+                        };
+
+            //  Execution of the query is deferred until the query variable is iterated over in a foreach,
+            //  For Each loop or ToList(). 
+
+
+
+            /*return PagedList<Owner>.ToPagedList(FindAll().OrderBy(on => on.Name),
+                ownerParameters.PageNumber,
+                ownerParameters.PageSize);*/
+
+            var stations = PagedList<StationLite>.ToPagedList(query, pagingParms.PageNumber, pagingParms.PageSize);
+            for (int i = 0; i < stations.Count; i++)
+            {
+
+                stations[i].Distance = Math.Round( GeoHelpers.HaversineDistance(fromLat, fromLongt, stations[i], units), 2);
+            }
+            if(stations != null)
+            {
+                Logger.LogInformation($" Returned {stations.Count} items for query near this geo location at: {DateTime.UtcNow}");
+            }
+            else
+            {
+                Logger.LogInformation($" Could not find any locations near this geolocation. TimeStampe: {DateTime.UtcNow}");
+            }
+            return stations;
+        }
+
         public IQueryable<StationLite>GetAllFlat()
         {
             var query = from station in Context.PetrolStations
@@ -79,44 +129,5 @@ namespace PS.Datastore.EFCore.Repositories
                 .Include(v => v.Vendor)
                 .AsNoTracking().FirstOrDefaultAsync(s => s.Id == id);
         }
-
-        /*private static List<string>GetLogosForVendor(string logoName)
-        {
-            // "C:\\Users\\moppenheimer\\repo\\web\\PS\\PS.API\\asdaasda_logo_40_x_40.jpg",
-            List<string> Logos = new List<string>();
-
-
-            //var imagePath= Path.Combine(Directory.GetCurrentDirectory(), "Images", fileName);
-
-            var basePath = Path.Combine(WebHostEnvironment.WebRootPath, "img", "logos"); 
-
-            //"~/img/assets/vendorLogos/asda_logo_40_x_40.jpg",
-
-            var ExtraSmall = VendorLogoHelper.GetVendorLogo(
-                logoName,
-                VendorLogoSize.ExtraSmall,
-                basePath);
-            Logos.Add(ExtraSmall);
-
-			var Small = VendorLogoHelper.GetVendorLogo(
-				logoName,
-				VendorLogoSize.Small,
-                basePath);
-			Logos.Add(Small);
-
-			var Medium = VendorLogoHelper.GetVendorLogo(
-				logoName,
-				VendorLogoSize.Medium,
-				PS.Core.Helpers.Constants.VendorLogoUrlPrefix);
-			Logos.Add(Medium);
-
-			var Large = VendorLogoHelper.GetVendorLogo(
-				logoName,
-				VendorLogoSize.Large,
-				PS.Core.Helpers.Constants.VendorLogoUrlPrefix);
-			Logos.Add(Large);
-
-            return Logos;
-		}*/
     }
 }

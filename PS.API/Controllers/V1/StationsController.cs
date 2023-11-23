@@ -1,7 +1,9 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using PS.Core.Helpers;
+using PS.Core.Helpers.Paging;
 using PS.Core.Models.ApiRequestResponse;
 using PS.UseCases.Interfaces;
 
@@ -19,11 +21,14 @@ namespace PS.API.Controllers.V1
         //public IList<Station> Stations { get; set; } = default!;
         public readonly IGetAllPetrolStationsFlatUseCase GetAllPetrolStationsFlatUseCase;
         private readonly IWebHostEnvironment WebHostingEnvironment;
+        private readonly IGetAllStationNearLatLongPoint GetAllStationNearLatLongPoint;
 
-        public StationsController(IGetAllPetrolStationsFlatUseCase getAllPetrolStationsFlatUseCase, IWebHostEnvironment webHostingEnvironment)
+        public StationsController(IGetAllPetrolStationsFlatUseCase getAllPetrolStationsFlatUseCase, IWebHostEnvironment webHostingEnvironment,
+            IGetAllStationNearLatLongPoint iGetAllStationNearLatLongPoint)
         {
             GetAllPetrolStationsFlatUseCase = getAllPetrolStationsFlatUseCase;
             WebHostingEnvironment = webHostingEnvironment;
+            GetAllStationNearLatLongPoint = iGetAllStationNearLatLongPoint;    
         }
 
         /// <summary>
@@ -31,11 +36,34 @@ namespace PS.API.Controllers.V1
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public List<StationLite> GetStations()
+        /*public List<StationLite> GetStations()
         {
             var query = GetAllPetrolStationsFlatUseCase.Execute().ToList();
             var stations = GetStationLogos(query);
             return stations;
+        }*/
+
+        [HttpGet("statios-nearby")]
+        public List<StationLite>GetNearbayStation(double fromLat, double fromLongt, int countryId,
+            DistanceUnit units, [FromQuery] PagingParameters pagingParms)
+        {
+            var query = GetAllStationNearLatLongPoint.Execute(fromLat, fromLongt, countryId, units, pagingParms);
+            var stations = GetStationLogos(query);
+
+            var metadata = new
+            {
+                stations.TotalCount,
+                stations.PageSize,
+                stations.CurrentPage,
+                stations.TotalPages,
+                stations.HasNext,
+                stations.HasPrevious
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+
+            return stations.OrderBy( s => s.Distance).ToList();
+
         }
 
         private List<string> GetLogosForStation(string logo)
@@ -59,7 +87,13 @@ namespace PS.API.Controllers.V1
             return Logos;
         }
 
-        private List<StationLite> GetStationLogos(List<StationLite> stations)
+        /// <summary>
+        /// Helper function, to get the respective <see cref="Vendor"/> logo for 
+        /// <see cref="StationLite"/> instance.
+        /// </summary>
+        /// <param name="stations"></param>
+        /// <returns></returns>
+        private PagedList<StationLite> GetStationLogos(PagedList<StationLite> stations)
         {
             foreach (StationLite station in stations)
             {

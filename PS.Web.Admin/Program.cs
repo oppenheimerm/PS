@@ -104,6 +104,7 @@ builder.Services.AddTransient<IGetPetrolStationByIdUseCase, GetPetrolStationById
 builder.Services.AddTransient<IGetEmployeesDirectoryUseCase, GetEmployeesDirectoryUseCase>();
 builder.Services.AddTransient<IAddEmployeeUseCase, AddEmployeeUseCase>();
 builder.Services.AddTransient<IAddEmployeeObjectUseCase, AddEmployeeObjectUseCase>();
+builder.Services.AddTransient<IGetAllStationNearLatLongPoint, GetAllStationNearLatLongPoint>();
 //builder.Services.AddTransient<,>();
 
 
