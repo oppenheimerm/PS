@@ -26,11 +26,14 @@ namespace PS.Core.Models.ApiRequestResponse
         public bool StationOnline { get; set; } = false;
 
         public string VendorName { get; set; } = string.Empty;
-        public string Country { get; set; } = string.Empty; 
-        public bool PayByApp { get; set;} = false;
+        public string Country { get; set; } = string.Empty;
+        public bool PayByApp { get; set; } = false;
         public bool PayAtPump { get; set; } = false;
         public List<string>? Logos { get; set; }
         [JsonIgnore]
         public string Logo { get; set; } = string.Empty;
-    }
+        public double? Distance { get; set; }
+
+    }  
+
 }

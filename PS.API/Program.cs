@@ -13,11 +13,8 @@ using System.Text.Json.Serialization;
 using PS.API.Authorization.MiddleWare;
 using PS.API.Filters;
 using Microsoft.OpenApi.Models;
-using System.Security.Policy;
 using Microsoft.Extensions.FileProviders;
 using Asp.Versioning;
-using System.Reflection;
-
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration["ConnectionStrings:DefaultConnection"];
@@ -79,10 +76,6 @@ builder.Services.AddSwaggerGen(options =>
             Url = new Uri("https://example.com/license")
         }
     });
-	// using System.Reflection;
-	var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-	options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-
 	//https://www.c-sharpcorner.com/article/how-to-add-jwt-bearer-token-authorization-functionality-in-swagger/
 	options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
     {
@@ -125,6 +118,7 @@ builder.Services.AddScoped<IWebApiUserRepository, WebApiUserRepository>();
 
 //  UseCases
 builder.Services.AddTransient<IGetAllPetrolStationsFlatUseCase, GetAllPetrolStationsFlatUseCase>();
+builder.Services.AddTransient<IGetAllStationNearLatLongPoint, GetAllStationNearLatLongPoint>();
 
 
 var app = builder.Build();
