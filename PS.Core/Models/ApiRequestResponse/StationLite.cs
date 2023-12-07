@@ -15,7 +15,6 @@ namespace PS.Core.Models.ApiRequestResponse
 
         public string StationAddress { get; set; } = string.Empty;
 
-        public string? StationAddress2 { get; set; } = string.Empty;
 
         public string StationPostcode { get; set; } = string.Empty;
 
@@ -33,6 +32,7 @@ namespace PS.Core.Models.ApiRequestResponse
         [JsonIgnore]
         public string Logo { get; set; } = string.Empty;
         public double? Distance { get; set; }
+        public bool AccessibleToiletNearby { get; set; } = false;
 
     }  
 

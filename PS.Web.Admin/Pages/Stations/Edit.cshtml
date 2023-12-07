@@ -27,6 +27,21 @@
                     <span asp-validation-for="EditPetrolStationVM.StationPostcode" class="text-danger"></span>
                 </div>
                 <div class="form__margin">
+                    <label asp-for="EditPetrolStationVM.AccessibleToiletNearby" class="control-label"></label>
+                    <input asp-for="EditPetrolStationVM.AccessibleToiletNearby" class="chk__bx" aria-label="Has accessible toilets" />
+                    <span asp-validation-for="EditPetrolStationVM.AccessibleToiletNearby" class="text-danger"></span>
+                </div>
+                <div class="form__margin">
+                    <label asp-for="EditPetrolStationVM.PayAtPump" class="control-label"></label>
+                    <input asp-for="EditPetrolStationVM.PayAtPump" class="chk__bx" aria-label="Pay at pump available" />
+                    <span asp-validation-for="EditPetrolStationVM.PayAtPump" class="text-danger"></span>
+                </div>
+                <div class="form__margin">
+                    <label asp-for="EditPetrolStationVM.PayByApp" class="control-label"></label>
+                    <input asp-for="EditPetrolStationVM.PayByApp" class="chk__bx" aria-label="Pay by mobile app" />
+                    <span asp-validation-for="EditPetrolStationVM.PayByApp" class="text-danger"></span>
+                </div>
+                <div class="form__margin">
                     <label asp-for="EditPetrolStationVM.CountryId" class="control-label"></label>
                     <select asp-for="EditPetrolStationVM.CountryId" class="form__selectlist" asp-items="new SelectList(Model.EditPetrolStationVM.Countries,
                     nameof(PS.Core.Models.Country.Id), nameof(PS.Core.Models.Country.CountryName))">

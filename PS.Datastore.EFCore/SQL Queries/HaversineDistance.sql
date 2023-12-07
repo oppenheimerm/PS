@@ -2,7 +2,7 @@
 	RETURNS FLOAT
 	AS 
 	BEGIN
-	-- CONSTANTS
+	-- CONSTANTS DistanceUnit: 0 = Kilometers, 1 = Miles
 	DECLARE @EarthRadiusInMiles FLOAT=(CASE @DistanceUnit WHEN 1 THEN 3959 WHEN 0 THEN 6371 ELSE 0 END);
 	DECLARE @PI FLOAT=PI();
 	DECLARE @lat1Radians FLOAT=@Latitude1 * @PI / 180

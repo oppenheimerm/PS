@@ -1,6 +1,5 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PS.Core.Models
 {
@@ -56,5 +55,10 @@ namespace PS.Core.Models
         public DateTime? Added { get; set; }
 
         public Guid StationIdentifier { get; private set; }
+
+        public bool PayAtPump { get; set; } = false;
+        public bool PayByApp { get; set; } = false;
+
+        public bool AccessibleToiletNearby { get; set; } = false;
     }
 }

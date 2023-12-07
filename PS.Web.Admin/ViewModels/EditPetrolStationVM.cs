@@ -40,5 +40,9 @@ namespace PS.Web.Admin.ViewModels
         //  Drop down list
         public List<Country>? Countries { get; set; }
         public List<Vendor>? Vendors { get; set; }
+        public bool PayAtPump { get; set; } = false;
+        public bool PayByApp { get; set; } = false;
+
+        public bool AccessibleToiletNearby { get; set; } = false;
     }
 }
