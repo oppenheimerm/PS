@@ -3,7 +3,7 @@ using PS.Core.Models.ApiRequestResponse;
 
 namespace PS.Datastore.EFCore.Helpers.Geospatial
 {
-    //https://stormconsultancy.co.uk/blog/storm-news/the-haversine-formula-in-c-and-sql/
+    // https://stormconsultancy.co.uk/blog/storm-news/the-haversine-formula-in-c-and-sql/
     public static class GeoHelpers
     {        
 

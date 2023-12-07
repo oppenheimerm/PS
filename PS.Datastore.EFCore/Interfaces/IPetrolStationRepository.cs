@@ -16,6 +16,12 @@ namespace PS.Datastore.EFCore.Interfaces
         /// <returns></returns>
         Task<(Station station, bool Success, string ErrorMessage)> Add(Station station);
         /// <summary>
+        /// Edit / Update a <see cref="Station"/> entry.
+        /// </summary>
+        /// <param name="station"></param>
+        /// <returns></returns>
+        Task<(Station station, bool success, string ErrorMessage)> Edit(Station station);
+        /// <summary>
         /// Get all <see cref="Station"/> 's from database
         /// </summary>
         /// <returns></returns>
@@ -36,6 +42,17 @@ namespace PS.Datastore.EFCore.Interfaces
         /// <returns></returns>
         PagedList<StationLite> GetAllStationsNearLocation(double fromLat, double fromLongt, int countryId,
                     DistanceUnit units, [FromQuery] PagingParameters pagingParms);
+
+        /// <summary>
+        /// Get stations near user. Not paged.
+        /// </summary>
+        /// <param name="fromLat"></param>
+        /// <param name="fromLongt"></param>
+        /// <param name="countryId"></param>
+        /// <param name="units"></param>
+        /// <returns></returns>
+        List<StationLite> GetStationsNearUser(double fromLat, double fromLongt, int countryId,
+                   DistanceUnit units);
         /// <summary>
         /// Get <see cref="Station"/> by id
         /// </summary>

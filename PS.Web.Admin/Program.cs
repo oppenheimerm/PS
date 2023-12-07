@@ -105,6 +105,7 @@ builder.Services.AddTransient<IGetEmployeesDirectoryUseCase, GetEmployeesDirecto
 builder.Services.AddTransient<IAddEmployeeUseCase, AddEmployeeUseCase>();
 builder.Services.AddTransient<IAddEmployeeObjectUseCase, AddEmployeeObjectUseCase>();
 builder.Services.AddTransient<IGetAllStationNearLatLongPoint, GetAllStationNearLatLongPoint>();
+builder.Services.AddTransient<IEditPterolStationUseCase, EditPterolStationUseCase>();
 //builder.Services.AddTransient<,>();
 
 
