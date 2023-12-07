@@ -1,0 +1,341 @@
+﻿/*=============== BUTTONS / FORMS ===============*/
+
+/*=============== 
+    BUTTONS
+ ===============*/
+
+.btn {
+    margin: 0;
+    display: inline-block;
+    padding: 0 1.75rem; /* 0 28px */
+    vertical-align: middle;
+    font-size: var(--normal-font-size);
+    line-height: 2rem /* 32px */;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: .3s ease-in-out;
+    transition-property: background-color;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-color);
+    border: 1px solid;
+}
+
+.btn.btn__small{
+    padding: 0 0.875rem; /* 0 14px */
+}
+
+.btn:hover,
+.btn.btn__small:hover{
+    background-color: var(--ps-green);
+    color: var(--ps-black);
+    border-color: var(--ps-green);
+}
+
+/* exclude disabled button from this style */
+.btn__default {
+    background-color: transparent;
+    color: var(--ps-white);
+    border: 1px solid var(--ps-white);
+    border-radius: 16px;
+}
+
+
+.btn:not(disabled) {
+    cursor: pointer;
+}
+
+.btn__default:disabled {
+    background-color: transparent;
+    color: #7f8c8d;
+    border-color: rgba(239, 239, 240);
+}
+
+.btn:disabled,
+button:disabled,
+button[disabled] {
+    background-color: purple;
+    border: 1px solid purple;
+    cursor: not-allowed;
+}
+
+.btn.primary {
+    background-color: var(--accent-color);
+    color: #fff;
+    border: 1px solid transparent;
+    transition: .3s ease-in-out;
+    transition-property: background-color;
+}
+
+.btn.primary:hover {
+    background-color: purple;
+    border: 1px solid transparent;
+}
+
+/* see .warning-text root.css */
+.btn.danger {
+    background-color: var(--text-danger);
+    color: #fff;
+    border: 1px solid transparent;
+    transition: .3s ease-in-out;
+    transition-property: background-color;
+}
+
+.btn.danger:hover {
+    background-color: hsla(349,84%, 64%, .6); /* --text-danger: #f0506e; */
+}
+
+/*=============== 
+    CHECKBOX
+ ===============*/
+.chk__bx {
+    display: inline-block;
+    height: 1rem; /* 16px */
+    overflow: hidden;
+    margin-top: -4px;
+    vertical-align: middle;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    border: 1px solid green;
+    transition: var(--ease-in-out-3-sec);
+    transition-property: background-color,border;
+    margin-right: 0.5rem;
+}
+
+.chk__box:not(:disabled) {
+    cursor: pointer;
+}
+
+
+.chk__box:checked {
+    background-color: purple;
+    border-color: transparent;
+}
+    
+/*=============== 
+    FORMS
+ ===============*/
+
+.frm-container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@media (min-width: 576px) {
+    .frm-container {
+        max-width: 540px;
+    }
+}
+
+@media (min-width: 768px) {
+    .frm-container {
+        max-width: 720px;
+    }
+}
+
+@media (min-width: 992px) {
+    .frm-container {
+        max-width: 960px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .frm-container {
+        max-width: 1140px;
+    }
+}
+
+.center-form {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 14px;
+}
+
+.form-wrapper {
+    width: 390px;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 77px 55px 33px 55px;
+    box-shadow: 0px 0px 24px rgba(237, 237, 237, 0.03);
+    transition: all 300ms ease;
+    background: linear-gradient(90deg, var(--black-2), var(--black-3));
+}
+
+.form-wrapper:hover{
+    box-shadow: none;
+}
+
+.frm-hero-wrap {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    margin-bottom: var(--mb-0-5);
+    flex-wrap: wrap;
+}
+
+.frm-hero-wrap img {
+    width: 60px;
+    height: 60px;
+}
+
+.form__info-text {
+    font-size: var(--h3-font-size);
+    margin-bottom: var(--mb-0-75);
+}
+
+.field__set {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+.form__legend {
+    width: 100%;
+    color: inherit;
+    padding: 0;
+    font-size: var(--font-medium);
+    line-height: 1.4;
+}
+
+.form__margin {
+    margin: 20px auto;
+    width: 100%;
+}
+
+.form__input,
+.form__input-disabled {
+    height: 40px;
+    vertical-align: middle;
+    display: inline-block;
+    width: 100%;
+    border-radius: 8px;
+    padding: 8px;
+    border: 1px solid var(--form-inputs-border);
+    background-color: var(--frm-input-bg);
+    margin: 4px auto;
+    color: #ffffff;
+}
+
+.form__input-disabled {
+    font-weight: bold;
+    background-color: var(--text-warning);
+    color: var(--ps-black)
+    /*border-color: #d5dbdb;*/
+}
+
+.form__selectlist {
+    height: 40px;
+    border: none;
+    vertical-align: middle;
+    display: inline-block;
+    width: 100%;
+    border: 1px solid var(--form-inputs-border);
+    background-color: var(--frm-input-bg);
+    color: #ffffff;
+    border-radius: 8px;
+}
+
+.form__textarea {
+    max-width: 100%;
+    width: 100%;
+    border: 0 none;
+    padding: 0 10px;
+    background: #fff;
+    color: #1f1f21;
+    border: 1px solid #fff;
+}
+
+.form__textarea {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    vertical-align: top;
+}
+
+
+.validation-summary-errors {
+    padding: var(--mb-1);
+    border: 1px solid var(--text-danger-border);
+    border-radius: 8px;
+    margin-bottom: var(--mb-2);
+    margin-top: var(--mb-2);
+}
+
+.validation-summary-errors ul li:before {
+    content: " * ";
+}
+
+.validation-summary-errors ul li,
+.text-danger.field-validation-error {
+    margin: var(--mb-0-5);
+    color: var(--text-danger);
+    font-size: var(--normal-font-size);
+}
+
+.text-danger.field-validation-error {
+    display: inline-block;
+}
+
+.form__info {
+    display: inline-block;
+    padding: 8px;
+    border-radius: 0.5rem; /* 8px; */
+    margin-bottom: 0.5rem;
+    background-color: purple;
+    color: var(--body-color);
+}
+
+.form___actionbuttons-row {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem auto; /* 16px auto */
+}
+
+/*=============== 
+    The Description List element (dl)
+===============*/
+.disc__list {
+    display: flex;
+    width: 100%;
+    margin: 0 auto;
+    flex-direction: column;
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+    box-shadow: 0px 3px 8px -4px rgba(0,0,0,0.15);
+    margin-bottom: var(--mb-1);
+    background-color: var(--off-white);
+    padding: var(--mb-1);
+    border-radius: 8px;
+    color: var(--ps-black);
+}
+
+.disc__list .disc__list-title {
+    font-size: var(--h3-font-size);
+    font-weight: var(--font-bold);
+    margin-bottom: var(--mb-0-75);
+}
+
+.disc__list .disc__list-item{
+    margin-left: var(--mb-1-5);
+    font-size: var(--normal-font-size);
+}
+
+
+/*=============== 
+    Admin / Login
+===============*/
+.login__form {
+    flex-direction: column;
+    align-content: center;
+    width: 80%;
+}

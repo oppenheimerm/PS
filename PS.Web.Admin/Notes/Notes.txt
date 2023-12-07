@@ -1,8 +1,18 @@
-﻿Dashboard Ideas
+﻿Calculate the distance between two latitude/longitude coordinates in SQL Server
+	https://www.claytabase.co.uk/Academy/Learning-Databases/Using-SQL-Server-Functions/Calculate-the-distance-between-two-longitude-latitude-coordinates
+
+Linq to sql Haversine formula
+	https://stackoverflow.com/questions/10918874/linq-to-sql-haversine-formula
+EF Core User-defined function mapping
+	https://learn.microsoft.com/en-us/ef/core/querying/user-defined-function-mapping
+
+Dashboard Ideas
 
 https://www.spruko.com/demo/rapo/html/HTML-LTR/Leftmenu-Icon-Light-DarkSidebar/index.html
 https://demo.dashboardmarket.com/hexadash-html/ltr/index.html
 
+Blazor Dark / Theme Light theme
+	https://www.codeproject.com/Articles/5323228/Blazor-Web-Assembly-WASM-Theme-Switching
 
 Charts.css
 https://chartscss.org/

@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using PS.Core.Helpers;
 using PS.Core.Helpers.Paging;
 using PS.Core.Models.ApiRequestResponse;
+using PS.Datastore.EFCore.Interfaces;
+using PS.Datastore.EFCore.Repositories;
 using PS.UseCases.Interfaces;
 
 namespace PS.API.Controllers.V1
@@ -21,22 +23,45 @@ namespace PS.API.Controllers.V1
         public readonly IGetAllPetrolStationsFlatUseCase GetAllPetrolStationsFlatUseCase;
         private readonly IWebHostEnvironment WebHostingEnvironment;
         private readonly IGetAllStationNearLatLongPoint GetAllStationNearLatLongPoint;
+        // TESTING
+        private readonly IPetrolStationRepository PetrolStationRepository;
 
         public StationsController(IGetAllPetrolStationsFlatUseCase getAllPetrolStationsFlatUseCase, IWebHostEnvironment webHostingEnvironment,
-            IGetAllStationNearLatLongPoint iGetAllStationNearLatLongPoint)
+            IGetAllStationNearLatLongPoint iGetAllStationNearLatLongPoint, IPetrolStationRepository petrolStationRepository)
         {
             GetAllPetrolStationsFlatUseCase = getAllPetrolStationsFlatUseCase;
             WebHostingEnvironment = webHostingEnvironment;
             GetAllStationNearLatLongPoint = iGetAllStationNearLatLongPoint;
+            PetrolStationRepository = petrolStationRepository;
         }
 
+        //[AllowAnonymous]
+        [HttpGet("nearby-stations")]
+        public GetNearestStationsResponse NearbyStations(double fromLat, double fromLongt, int countryId, DistanceUnit units)
+        {
+
+            var response = new GetNearestStationsResponse();
+            var query = PetrolStationRepository.GetStationsNearUser(fromLat, fromLongt, countryId, units);
+
+
+            response.Stations = GetStationLogos(query);
+
+
+            return response;
+
+        }
+
+        /* Keep ut use for paged station list, when user wants all available list
+        [AllowAnonymous]
         [HttpGet("nearby-stations")]
         public GetNearestStationsResponse NearbyStations(double fromLat, double fromLongt, int countryId,
             DistanceUnit units, [FromQuery] PagingParameters pagingParms)
         {
 
             var response = new GetNearestStationsResponse();
-            var query = GetAllStationNearLatLongPoint.Execute(fromLat, fromLongt, countryId, units, pagingParms);
+            //var query = GetAllStationNearLatLongPoint.Execute(fromLat, fromLongt, countryId, units, pagingParms);
+            var query = PetrolStationRepository.GetAllStationsNearLocation2(fromLat, fromLongt, countryId, units, pagingParms);
+            var query
 
             response.Stations = GetStationLogos(query);
             response.TotalCount = query.TotalCount;
@@ -49,7 +74,7 @@ namespace PS.API.Controllers.V1
 
             return response;
 
-        }
+        }*/
 
         private List<string> GetLogosForStation(string logo)
         {
@@ -78,7 +103,7 @@ namespace PS.API.Controllers.V1
         /// </summary>
         /// <param name="stations"></param>
         /// <returns></returns>
-        private PagedList<StationLite> GetStationLogos(PagedList<StationLite> stations)
+        private List<StationLite> GetStationLogos(List<StationLite> stations)
         {
             foreach (StationLite station in stations)
             {

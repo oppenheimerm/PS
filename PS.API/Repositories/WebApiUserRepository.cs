@@ -139,6 +139,7 @@ namespace PS.API.Repositories
             rsp.LastName = user.LasttName;
             rsp.JwtToken = jwtToken;
             rsp.Initials = user.Initials;
+            //  TODO - REMOVE
             rsp.Photo = "PHOTO";
             rsp.EmailAddress = user.EmailAddress;
             rsp.StatusCode = (int)HttpStatusCode.OK;

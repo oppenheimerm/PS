@@ -26,6 +26,29 @@ namespace PS.Datastore.EFCore
             modelBuilder.Entity<Vendor>()
                 .HasIndex(c => c.VendorCode)
                 .IsUnique();
+
+            modelBuilder.HasDbFunction(typeof(ApplicationDbContext)
+                .GetMethod(nameof(HaversineDistance),
+                new[] { typeof(float), typeof(float), typeof(float), typeof(float), typeof(int) })!)/* 0 = Kilometers, 1 = Miles */
+                .HasName("HaversineDistance");
+
         }
+
+        /*[DbFunction("haversine_function")]
+        public static float HaversineDistance(float lat1, float long1, float lat2, float lon2g, string Unit)
+        {
+            throw new Exception(); // this code doesn't get executed; the call is passed through to the database function
+        }*/
+        /// <summary>
+        /// Where distance unit: Kilometers = 0, Miles = 1
+        /// </summary>
+        /// <param name="lat1"></param>
+        /// <param name="long1"></param>
+        /// <param name="lat2"></param>
+        /// <param name="lon2g"></param>
+        /// <param name="distanceUnit"></param>
+        /// <returns></returns>
+        /// <exception cref="NotSupportedException"></exception>
+        public float HaversineDistance(float lat1, float long1, float lat2, float lon2g, int distanceUnit) => throw new NotSupportedException();
     }
 }

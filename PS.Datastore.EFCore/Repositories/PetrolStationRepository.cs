@@ -9,7 +9,7 @@ using PS.Core.Models.ApiRequestResponse;
 using PS.Datastore.EFCore.Helpers.Geospatial;
 using PS.Datastore.EFCore.Interfaces;
 using PS.Core.Helpers.Paging;
-using static System.Collections.Specialized.BitVector32;
+
 
 namespace PS.Datastore.EFCore.Repositories
 {
@@ -28,8 +28,17 @@ namespace PS.Datastore.EFCore.Repositories
 
         public async Task<(Station station, bool Success, string ErrorMessage)> Add(Station station)
         {
+            // PostCode exist
+            var postCodeInUse = await PostCodeInUseAsync(station.StationPostcode);
+            if (postCodeInUse)
+            {
+                var errorMsg = $"Attempted to add station with duplicate postcode: {station.StationPostcode}. Timestamp: {DateTime.UtcNow}";
+                Logger.LogError(errorMsg);
+                return (new Station(), false, errorMsg);
+            }
             try
             {
+                station.StationPostcode = station.StationPostcode.ToUpperInvariant();
                 Context.PetrolStations.Add(station);
                 await Context.SaveChangesAsync();
                 Logger.LogInformation($"Station with Id: {station.Id}, and name of: {station.StationName} added to database at: {DateTime.UtcNow}");
@@ -42,6 +51,24 @@ namespace PS.Datastore.EFCore.Repositories
             }
         }
 
+        public async Task<(Station station, bool success, string ErrorMessage)> Edit(Station station)
+        {
+            try
+            {
+                station.StationPostcode = station.StationPostcode.ToUpperInvariant();
+                Context.PetrolStations.Update(station);
+                await Context.SaveChangesAsync();
+                Logger.LogInformation($"Station with Id: {station.Id}, and name of: {station.StationName} was updated at: {DateTime.UtcNow}");
+                return (station, true, string.Empty);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError($"Failed to update station: {station.StationName}. Timestamp : {DateTime.UtcNow}");
+                return (station, false, ex.ToString());
+            }
+
+        }
+
         public IQueryable<Station> GetAll()
         {
             var stations = Context.PetrolStations
@@ -50,6 +77,7 @@ namespace PS.Datastore.EFCore.Repositories
             return stations;
         }
 
+        // Paged nearest stations
         public PagedList<StationLite> GetAllStationsNearLocation(double fromLat, double fromLongt, int countryId, 
             DistanceUnit units, [FromQuery] PagingParameters pagingParms)
         {
@@ -98,6 +126,48 @@ namespace PS.Datastore.EFCore.Repositories
             return stations;
         }
 
+
+        public List<StationLite> GetStationsNearUser(double fromLat, double fromLongt, int countryId,
+           DistanceUnit units)
+        {
+            var latAsFloat = float.Parse(fromLat.ToString());
+            var longAsFloat = float.Parse(fromLongt.ToString());
+            
+
+            var table = from station in Context.PetrolStations
+                         join country in Context.Countries on station.CountryId equals country.Id
+                         join vendor in Context.PetrolVendors on station.VendorId equals vendor.Id
+                         where country.Id == countryId
+                         select new StationLite
+                         {
+                             Id = station.Id,
+                             StationName = station.StationName,
+                             StationAddress = station.StationAddress,
+                             StationAddress2 = station.StationAddress2,
+                             StationPostcode = station.StationPostcode,
+                             Latitude = station.Latitude,
+                             Longitude = station.Longitude,
+                             StationOnline = station.StationOnline,
+                             VendorName = vendor.VendorName,
+                             Country = country.CountryName,
+                             Logo = vendor.Logo,
+                             Distance = Context.HaversineDistance(latAsFloat, longAsFloat, 
+                             (float)station.Latitude.Value,
+                             (float)station.Longitude.Value,
+                             (int)units)
+                         };
+
+            
+            var stations = table
+                .OrderBy(s => s.Distance)
+                .Take(20)
+                .ToList();
+
+            Logger.LogInformation($"Found {stations.Count} near user.");
+
+            return stations;
+        }
+
         public IQueryable<StationLite>GetAllFlat()
         {
             var query = from station in Context.PetrolStations
@@ -129,5 +199,26 @@ namespace PS.Datastore.EFCore.Repositories
                 .Include(v => v.Vendor)
                 .AsNoTracking().FirstOrDefaultAsync(s => s.Id == id);
         }
+
+        public async Task<bool> PostCodeInUseAsync(string postCode)
+        {
+            // PostCodes are stored in uppercase.
+            var postCodeToCompare = postCode.ToUpperInvariant();
+
+            var exist = await Context.PetrolStations
+                .Where(s => s.StationPostcode == postCodeToCompare)
+                .AsNoTracking().FirstOrDefaultAsync();
+            
+
+            if(exist != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 }
