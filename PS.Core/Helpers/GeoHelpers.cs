@@ -1,5 +1,5 @@
 ﻿
 namespace PS.Core.Helpers
 {
-    public enum DistanceUnit { Miles, Kilometers };
+    public enum DistanceUnit { Kilometers, Miles };
 }

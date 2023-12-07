@@ -79,6 +79,9 @@ namespace PS.Web.Admin.Pages.Stations
             stationToEdit.VendorId = EditPetrolStationVM.VendorId;
             stationToEdit.CountryId = EditPetrolStationVM.CountryId;
             stationToEdit.CountryCode = EditPetrolStationVM.CountryCode;
+            stationToEdit.AccessibleToiletNearby = EditPetrolStationVM.AccessibleToiletNearby;
+            stationToEdit.PayAtPump = EditPetrolStationVM.PayAtPump;
+            stationToEdit.PayByApp = EditPetrolStationVM.PayByApp;
 
 
             var status = await EditPetrolStationUseCase.ExecuteAsync(stationToEdit);

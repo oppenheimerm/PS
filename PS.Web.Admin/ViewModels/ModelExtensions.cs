@@ -64,7 +64,10 @@ namespace PS.Web.Admin.ViewModels
                     Longitude = vm.Longitude,
                     VendorId = vm.VendorId,
                     CountryId = vm.CountryId,
-                    CountryCode = vm.CountryCode
+                    CountryCode = vm.CountryCode,
+                    AccessibleToiletNearby = vm.AccessibleToiletNearby,
+                    PayAtPump = vm.PayAtPump,
+                    PayByApp = vm.PayByApp,
                 };
             }
         }
@@ -88,7 +91,10 @@ namespace PS.Web.Admin.ViewModels
                     VendorId = station.VendorId,
                     CountryId = station.CountryId,
                     CountryCode = station.CountryCode,
-                    Id = station.Id
+                    Id = station.Id,
+                    PayAtPump = station.PayAtPump,
+                    PayByApp = station.PayByApp,
+                    AccessibleToiletNearby = station.AccessibleToiletNearby
                 };
             }
         }
@@ -110,7 +116,10 @@ namespace PS.Web.Admin.ViewModels
                     Longitude = vm.Longitude,
                     VendorId = vm.VendorId,
                     CountryId = vm.CountryId,
-                    CountryCode = vm.CountryCode
+                    CountryCode = vm.CountryCode,
+                    AccessibleToiletNearby = vm.AccessibleToiletNearby,
+                    PayAtPump = vm.PayAtPump,
+                    PayByApp = vm.PayByApp
                 };
             }
         }

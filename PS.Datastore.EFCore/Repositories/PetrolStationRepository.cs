@@ -90,15 +90,17 @@ namespace PS.Datastore.EFCore.Repositories
                             Id = station.Id,
                             StationName = station.StationName,
                             StationAddress = station.StationAddress,
-                            StationAddress2 = station.StationAddress2,
                             StationPostcode = station.StationPostcode,
                             Latitude = station.Latitude,
                             Longitude = station.Longitude,
                             StationOnline = station.StationOnline,
                             VendorName = vendor.VendorName,
                             Country = country.CountryName,
-                            Logo = vendor.Logo
-                        };
+                            Logo = vendor.Logo,
+                            PayAtPump = station.PayAtPump,
+                            PayByApp = station.PayByApp,
+                            AccessibleToiletNearby = station.AccessibleToiletNearby
+    };
 
             //  Execution of the query is deferred until the query variable is iterated over in a foreach,
             //  For Each loop or ToList(). 
@@ -143,7 +145,6 @@ namespace PS.Datastore.EFCore.Repositories
                              Id = station.Id,
                              StationName = station.StationName,
                              StationAddress = station.StationAddress,
-                             StationAddress2 = station.StationAddress2,
                              StationPostcode = station.StationPostcode,
                              Latitude = station.Latitude,
                              Longitude = station.Longitude,
@@ -151,6 +152,9 @@ namespace PS.Datastore.EFCore.Repositories
                              VendorName = vendor.VendorName,
                              Country = country.CountryName,
                              Logo = vendor.Logo,
+                             PayAtPump = station.PayAtPump,
+                             PayByApp = station.PayByApp,
+                             AccessibleToiletNearby = station.AccessibleToiletNearby,
                              Distance = Context.HaversineDistance(latAsFloat, longAsFloat, 
                              (float)station.Latitude.Value,
                              (float)station.Longitude.Value,
@@ -178,7 +182,6 @@ namespace PS.Datastore.EFCore.Repositories
                             Id = station.Id,
                             StationName = station.StationName,
                             StationAddress = station.StationAddress,
-                            StationAddress2 = station.StationAddress2,
                             StationPostcode = station.StationPostcode,
                             Latitude = station.Latitude,
                             Longitude = station.Longitude,
