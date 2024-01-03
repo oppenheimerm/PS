@@ -35,7 +35,7 @@ namespace PS.API.Controllers.V1
             PetrolStationRepository = petrolStationRepository;
         }
 
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpGet("nearby-stations")]
         public GetNearestStationsResponse NearbyStations(double fromLat, double fromLongt, int countryId, DistanceUnit units)
         {

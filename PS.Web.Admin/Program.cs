@@ -8,6 +8,7 @@ using PS.Datastore.EFCore.Repositories;
 using PS.UseCases.CountryUseCase;
 using PS.UseCases.EmployeeUseCase;
 using PS.UseCases.Interfaces;
+using PS.UseCases.MemberUseCase;
 using PS.UseCases.PetrolStationUseCase;
 using PS.UseCases.VendorUseCase;
 using PS.Web.Admin.Hubs;
@@ -85,6 +86,7 @@ builder.Services.AddScoped<ICountryRepository, CountryRepository>();
 builder.Services.AddScoped<IVendorRepository, VendorRepository>();
 builder.Services.AddScoped<IPetrolStationRepository, PetrolStationRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IMembersRepository, MembersRepository>();
 
 //  Usercases
 builder.Services.AddTransient<IAddCountryUseCase, AddCountry>();
@@ -106,7 +108,9 @@ builder.Services.AddTransient<IAddEmployeeUseCase, AddEmployeeUseCase>();
 builder.Services.AddTransient<IAddEmployeeObjectUseCase, AddEmployeeObjectUseCase>();
 builder.Services.AddTransient<IGetAllStationNearLatLongPoint, GetAllStationNearLatLongPoint>();
 builder.Services.AddTransient<IEditPterolStationUseCase, EditPterolStationUseCase>();
-//builder.Services.AddTransient<,>();
+builder.Services.AddTransient<IGetAllMembersUseCase, GetAllMembersUseCase>();
+builder.Services.AddTransient<IGetMemberByIdUseCase, GetMemberByIdUseCase>();
+
 
 
 builder.Services.AddSignalR();

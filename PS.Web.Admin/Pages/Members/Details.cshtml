@@ -1,0 +1,94 @@
+﻿@page
+@model PS.Web.Admin.Pages.Members.DetailsModel
+@{
+    ViewData["Title"] = $"View Details for : {Model.Member?.LasttName}, {Model.Member?.FirstName}";
+}
+
+<section class="section" id="details_station">
+    <div class="container flex">
+        <dl class="disc__list">
+            <dt class="disc__list-title">
+                @Html.DisplayNameFor(model => model.Member.Id)
+            </dt>
+            <dd class="disc__list-item">
+                @Html.DisplayFor(model => model.Member.Id)
+            </dd>
+
+            <dt class="disc__list-title">
+                @Html.DisplayNameFor(model => model.Member.LasttName)
+            </dt>
+            <dd class="disc__list-item">
+                @Html.DisplayFor(model => model.Member.LasttName)
+            </dd>
+
+            <dt class="disc__list-title">
+                @Html.DisplayNameFor(model => model.Member.FirstName)
+            </dt>
+            <dd class="disc__list-item">
+                @Html.DisplayFor(model => model.Member.FirstName)
+            </dd>
+
+            <dt class="disc__list-title">
+                @Html.DisplayNameFor(model => model.Member.EmailAddress)
+            </dt>
+            <dd class="disc__list-item">
+                @Html.DisplayFor(model => model.Member.EmailAddress)
+            </dd>
+
+            <dt class="disc__list-title">
+                @Html.DisplayNameFor(model => model.Member.IsVerified)
+            </dt>
+            <dd class="disc__list-item">
+                @Html.DisplayFor(model => model.Member.IsVerified)
+            </dd>
+
+            <dt class="disc__list-title">
+                @Html.DisplayNameFor(model => model.Member.Created)
+            </dt>
+            <dd class="disc__list-item">
+                @Html.DisplayFor(model => model.Member.Created)
+            </dd>
+
+            <dt class="disc__list-title">
+                @Html.DisplayNameFor(model => model.Member.Updated)
+            </dt>
+            <dd class="disc__list-item">
+                @Html.DisplayFor(model => model.Member.Updated)
+            </dd>
+
+            <dt class="disc__list-title">
+                @Html.DisplayNameFor(model => model.Member.AcceptTerms)
+            </dt>
+            <dd class="disc__list-item">
+                @Html.DisplayFor(model => model.Member.AcceptTerms)
+            </dd>
+
+            <dt class="disc__list-title">
+                @Html.DisplayNameFor(model => model.Member.MemberPhoto)
+            </dt>
+            
+            <dd class="disc__list-item">
+                @Html.DisplayFor(model => model.Member.MemberPhoto)
+            </dd>
+
+            <dt class="disc__list-title">
+                @Html.DisplayNameFor(model => model.Member.RegisteredDate)
+            </dt>
+            <dd class="disc__list-item">
+                @Html.DisplayFor(model => model.Member.RegisteredDate)
+            </dd>
+
+            <dt class="disc__list-title">
+                @Html.DisplayNameFor(model => model.Member.LastLogIn)
+            </dt>
+            <dd class="disc__list-item">
+                @Html.DisplayFor(model => model.Member.LastLogIn)
+            </dd>
+
+        </dl>
+        <div>
+            <a class="btn btn__small" asp-page="Index">Back to List</a>
+        </div>
+    </div>
+</section>
+

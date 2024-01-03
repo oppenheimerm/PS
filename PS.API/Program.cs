@@ -15,6 +15,7 @@ using PS.API.Filters;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.FileProviders;
 using Asp.Versioning;
+using PS.API.Helpers;
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration["ConnectionStrings:DefaultConnection"];
@@ -110,15 +111,20 @@ builder.Services.AddSwaggerGen(options =>
 // configure DI for application services
 builder.Services.AddScoped<IJwtUtils, JwtUtils>();
 
+builder.Services.AddSingleton<ImageProcessor>();
+
 
 //  Repositories
 builder.Services.AddScoped<IPetrolStationRepository, PetrolStationRepository>();
 builder.Services.AddScoped<IWebApiUserRepository, WebApiUserRepository>();
+builder.Services.AddScoped<IMemberRepository, MemberRepository>();
 //builder.Services.AddTransient<,>();
 
 //  UseCases
 builder.Services.AddTransient<IGetAllPetrolStationsFlatUseCase, GetAllPetrolStationsFlatUseCase>();
 builder.Services.AddTransient<IGetAllStationNearLatLongPoint, GetAllStationNearLatLongPoint>();
+
+builder.Services.AddScoped<IPhotoFileRepository, PhotoFileRepository>();
 
 
 var app = builder.Build();

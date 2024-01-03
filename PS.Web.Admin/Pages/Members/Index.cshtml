@@ -1,0 +1,62 @@
+﻿@page
+@model PS.Web.Admin.Pages.Members.IndexModel
+@{
+}
+
+<section class="section" id="all_stations">
+    <div class="allmemers__wrap container flex">
+        <p class="section__label touppersection__label">Members</p>
+        <a class="page__links" asp-page="./Create">New</a>
+        <table class="table table__middle">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Firstame</th>                    
+                    <th>LastNamer</th>                    
+                    <th>Email</th>
+                    <th>LastLogin</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Members)
+                {
+                    <tr>
+                        <td>
+                            @item.Title
+                        </td>
+                        <td>
+                            @item.FirstName
+                        </td>
+                        <td>
+                            @item.LasttName
+                        </td>
+
+                        <td>
+                            @item.EmailAddress
+                        </td>
+                        <td>
+                            @{
+                                var lastLogin = (item.LastLogIn != null) ? item.LastLogIn.Value.ToString("MM/dd/yyyy") : "";
+                               }
+                            @lastLogin
+                        </td>
+                        <td>
+                            <div class="table__actions-wrap">
+                                <a class="btn btn__small" asp-page="Details" asp-route-id="@item.Id">Details</a>
+
+                                <a class="btn btn__small" asp-page="Edit" asp-route-id="@item.Id">
+                                    Edit
+                                </a>
+                                <a class="btn danger btn__small" asp-page="Delete" asp-route-id="@item.Id">
+                                    Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</section>

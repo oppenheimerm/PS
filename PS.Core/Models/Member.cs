@@ -35,6 +35,9 @@ namespace PS.Core.Models
         [JsonIgnore]
         [Required]
         public string PasswordHash { get; set; } = string.Empty;
+        /// <summary>
+        /// Verification date of emaail
+        /// </summary>
         public DateTime? Verified { get; set; }
         public bool IsVerified => Verified.HasValue || PasswordReset.HasValue;
         public string? ResetToken { get; set; }
