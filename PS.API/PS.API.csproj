@@ -22,6 +22,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.10" />
+    <PackageReference Include="SkiaSharp" Version="2.88.6" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="7.1.0" />
   </ItemGroup>
@@ -30,6 +31,10 @@
     <ProjectReference Include="..\PS.Core\PS.Core.csproj" />
     <ProjectReference Include="..\PS.Datastore.EFCore\PS.Datastore.EFCore.csproj" />
     <ProjectReference Include="..\PS.UseCases\PS.UseCases.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\usersImages\" />
   </ItemGroup>
 
 </Project>

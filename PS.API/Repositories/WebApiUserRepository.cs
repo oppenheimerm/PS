@@ -9,6 +9,8 @@ using PS.Core.Helpers;
 using BC = BCrypt.Net.BCrypt;
 using PS.Core.Models.ApiRequestResponse;
 using System.Net;
+using Azure.Core;
+using PS.API.Helpers;
 
 
 namespace PS.API.Repositories
@@ -30,16 +32,22 @@ namespace PS.API.Repositories
         private readonly IJwtUtils JwtUtilis;
         private readonly IConfiguration Configuration;
         private readonly ILogger<WebApiUserRepository> Logger;
+        private IWebHostEnvironment Environment;
+        private readonly IPhotoFileRepository PhotoFileRepository;
 
         public WebApiUserRepository(ApplicationDbContext context,
             IJwtUtils jwtUtilis,
             IConfiguration configuration,
-            ILogger<WebApiUserRepository> logger)
+            IPhotoFileRepository photoFileRepository,
+            ILogger<WebApiUserRepository> logger,
+            IWebHostEnvironment environment)
         {
             Context = context;
             JwtUtilis = jwtUtilis;
             Configuration = configuration;
             Logger = logger;
+            Environment = environment;
+            PhotoFileRepository = photoFileRepository;
         }
 
         public async Task<(bool Success, string ErrorMessage)> RegisterAsync(RegisterRequest model, string origin)
@@ -69,7 +77,7 @@ namespace PS.API.Repositories
             var randomString = new RandomStringGenerator();
             account.VerificationToken = randomString.Generate(13);
 
-            account.MemberPhoto = "PHOTO";
+            account.MemberPhoto = string.Empty;
 
             // TODO
             //  REMOVE FOR PRODUCTION
@@ -105,6 +113,17 @@ namespace PS.API.Repositories
                 return rsp;
             }
 
+            //  Verify that user has verified their email address
+            if(user.Verified == null)
+            {
+                //  Account not verified
+                errorMessage = "Please verify your eamail address";
+                Logger.LogError($" User {user.EmailAddress} attempted to login without email verfication. Timestamp : {DateTime.UtcNow}");
+                rsp.StatusCode = (int)HttpStatusCode.NotFound;
+                rsp.Message = errorMessage;
+                return rsp;
+            }
+
             // validate
             if (!BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
             {
@@ -121,7 +140,7 @@ namespace PS.API.Repositories
             // authentication successful so generate jwt and refresh tokens
             var jwtToken = JwtUtilis.GenerateJwtToken(user);
             var refreshToken = await JwtUtilis.GenerateRefreshTokenAsync(ipAddress);
-            user.RefreshTokens.Add(refreshToken);
+            user?.RefreshTokens?.Add(refreshToken);
             user.LastLogIn = DateTime.UtcNow;
 
             // remove old refresh tokens from user
@@ -133,13 +152,14 @@ namespace PS.API.Repositories
 
 
             //return new AuthenticateResponse(user, jwtToken, refreshToken.Token, errorMessage, (int)HttpStatusCode.OK);
+
+            //  TODO - Extract below into a function
             rsp.StatusCode = (int)HttpStatusCode.OK;
             rsp.Id = user.Id;
             rsp.FirstName = user.FirstName;
             rsp.LastName = user.LasttName;
             rsp.JwtToken = jwtToken;
             rsp.Initials = user.Initials;
-            //  TODO - REMOVE
             rsp.Photo = "PHOTO";
             rsp.EmailAddress = user.EmailAddress;
             rsp.StatusCode = (int)HttpStatusCode.OK;
@@ -203,7 +223,11 @@ namespace PS.API.Repositories
         }
 
 
-		public async Task<(bool Success, string ErrorMessage)> VerifyEmailAsync(string token)
+        //  Our test function to mock getting user profile
+
+
+
+        public async Task<(bool Success, string ErrorMessage)> VerifyEmailAsync(string token)
 		{
             if (token == null)
             {
@@ -230,8 +254,63 @@ namespace PS.API.Repositories
             return (true, msg);
 		}
 
-		#region helpers
-		private async Task<(Member user, bool Success, string ErrorMessage)> GetUserByRefreshTokenAsync(string token)
+        //  TODO - Change response type
+        public async Task<UploadPhotoResponse> UploadUPhoto(string token, IFormFile imageFile)
+        {
+            var response = await GetUserByRefreshTokenAsync(token);
+            if (response.Success)
+            {
+                //folderEntity.AbsolutePath = Path.Combine(Environment.WebRootPath, Core.Helpers.Constants.RootDirectory, folderStatus.directoryInfo.Name);
+                var absolutePath = Path.Combine(Environment.WebRootPath, Helpers.Constants.RootDirectory);
+                // Is valid file?
+                if (FileHelpers.ValidImageFile(imageFile))
+                {
+                    //var addPhoto = await PhotoFileRepository.AddPhotoAsync(NewPhoto.Photo, folderDbEntity.folderDBEntity.FolderName)
+                    var addPhoto = await PhotoFileRepository.AddPhotoAsync(imageFile, absolutePath);
+                    if (addPhoto.Success)
+                    {
+                        return new UploadPhotoResponse()
+                        {
+                            StatusCode = 200,
+                            Message = string.Empty,
+                            FileName = addPhoto.fileInfo.Name,  
+                            Member = response.user
+                        };
+                    }
+                    else {
+                        // faild to add photo for some reasnon
+                        return new UploadPhotoResponse()
+                        {
+                            StatusCode = 500,
+                            Message = addPhoto.ErrorMessage,
+                            FileName = string.Empty
+                        };
+                    }
+                }
+                else {
+                    //  Invalid file type
+                    return new UploadPhotoResponse()
+                    {
+                        StatusCode = 500,
+                        Message = "Invalid photo file extension",
+                        FileName = string.Empty
+                    };
+                }
+            }
+            else
+            {
+                return new UploadPhotoResponse()
+                {
+                    StatusCode = 404,
+                    Message = "User not found",
+                    FileName = string.Empty
+                };
+            }
+        }
+
+
+        #region helpers
+        private async Task<(Member user, bool Success, string ErrorMessage)> GetUserByRefreshTokenAsync(string token)
         {
             var user = await Context.Members.SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token == token));
 

@@ -38,8 +38,10 @@ namespace PS.API.Repositories.Interfaces
         /// <param name="token"></param>
         /// <returns></returns>
         Task<(bool Success, string ErrorMessage)> VerifyEmailAsync(string token);
-		//Task<AuthenticateResponse> RefreshTokenAsync(string token, string ipAddress);
-		//Task RevokeTokenAsync(string token, string ipAddress);
+        Task<UploadPhotoResponse> UploadUPhoto(string token, IFormFile imageFile);
+        //Task<AuthenticateResponse> RefreshTokenAsync(string token, string ipAddress);
+        //Task RevokeTokenAsync(string token, string ipAddress);
 
-	}
+
+    }
 }

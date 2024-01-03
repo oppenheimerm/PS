@@ -20,10 +20,12 @@ namespace PS.API.Controllers.V1
     public class UsersController : BaseController
     {
         private readonly IWebApiUserRepository WebApiUserRepository;
+        private readonly IMemberRepository MembersRepository;
 
-        public UsersController(IWebApiUserRepository webApiUserRepository)
+        public UsersController(IWebApiUserRepository webApiUserRepository, IMemberRepository memberRepository)
         {
             WebApiUserRepository = webApiUserRepository;
+            MembersRepository = memberRepository;
         }
 
         /// <summary>
@@ -108,21 +110,78 @@ namespace PS.API.Controllers.V1
             var response = await WebApiUserRepository.RefreshTokenAsync(refreshToken, ipAddress());
             setTokenCookie(response.RefreshToken);
             return Ok(response);
+        }
 
 
-            /*string refreshToken = string.Empty;
-            var refreshTokenCookie = Request.Cookies["refreshToken"];
-            var refreshTokenHeader = Request.Headers["refreshToken"];
+        /*[HttpGet("profile")]
+        public async Task<ActionResult<AuthenticateResponse>> GetProfile()
+        {
+            // Check for null
+            var refreshToken = Request.Cookies["refreshToken"];
+            var response = await WebApiUserRepository.GetUser(refreshToken, string.Empty);
+            return Ok(response);
+        }*/
 
-            refreshToken = refreshTokenCookie ?? refreshTokenHeader;*/
+        [HttpPost("upload-photo"), DisableRequestSizeLimit]
+        public async Task<ActionResult<UploadPhotoResponse>> UplaodPhoto(IFormFile file)
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            if (refreshToken == null)
+            {
+                return new UploadPhotoResponse()
+                {
+                    StatusCode = 401,
+                    Message = "Not Authorized",
+                    FileName = string.Empty
+                };
+            }
+            else
+            {
+                var fileFormCollection = await Request.ReadFormAsync();
+                var fileToUpload = fileFormCollection.Files.First();
 
+                if(fileToUpload == null)
+                {
+                    return new UploadPhotoResponse()
+                    {
+                        StatusCode = 404,
+                        Message = "Photo missing",
+                        FileName = string.Empty
+                    };
+                }
+                else
+                {
+                    var response = await WebApiUserRepository.UploadUPhoto(refreshToken, fileToUpload);
+                    if(response.StatusCode == 200  && response.Member != null)
+                    {
+                        //  Good to go, update profile data
+                        var updateUserPhotoStatus = await MembersRepository.UpdateUserPhoto(response.Member, response.FileName);
+                        if(updateUserPhotoStatus.Success)
+                        {
+                            response.Member.MemberPhoto = response.FileName;
+                            return Ok(response); 
+                        }
+                        else
+                        {
+                            //   unable to update member photo for some resaon, return friendl error message,
+                            //  error would have already been logged ny the calling function above
+                            return NotFound(response);
 
-            /*var response = await WebApiUserRepository.RefreshTokenAsync(refreshToken, ipAddress());
-            setTokenCookie(response.RefreshToken);
-            return Ok(response);*/
+                        }
+
+                    }
+                    else{
+                        //  Just return the response which willl inlcude failed message
+                        return response;
+                    }                    
+                }
+            }
+            
         }
 
         #region Helpers
+
+
         private string ipAddress()
         {
             // get source ip address for the current request
