@@ -42,7 +42,8 @@ namespace PS.API.Helpers
                     thumb.Encode(format, Quality).SaveTo(fs);
 
                     fileStream = fs;
-                    return new FileInfo(filePath) ;
+                    //fs.n
+                    return new FileInfo(fs.Name);
                 }
             }
         }

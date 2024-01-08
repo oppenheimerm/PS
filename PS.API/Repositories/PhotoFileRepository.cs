@@ -34,8 +34,8 @@ namespace PS.API.Repositories
                 var fileInfo = Processor.CreateImage(imageStream, filePath);
 
                 //var fiileInfo = new FileInfo(filePath);
-                Logger.LogInformation($"Photo: {file.FileName} added  at {DateTime.UtcNow}");
-                return (new FileInfo(filePath), true, string.Empty);
+                Logger.LogInformation($"Photo: {fileInfo.Name} added  at {DateTime.UtcNow}");
+                return (fileInfo, true, string.Empty);
             }
             catch(Exception ex)
             {

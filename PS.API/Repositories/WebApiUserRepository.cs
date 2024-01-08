@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PS.API.Authorization.Interfaces;
-using PS.API.Exceptions;
 using PS.API.Repositories.Interfaces;
 using PS.Core.Models;
 using PS.Datastore.EFCore;
@@ -9,7 +8,6 @@ using PS.Core.Helpers;
 using BC = BCrypt.Net.BCrypt;
 using PS.Core.Models.ApiRequestResponse;
 using System.Net;
-using Azure.Core;
 using PS.API.Helpers;
 
 
@@ -61,6 +59,11 @@ namespace PS.API.Repositories
 				//sendAlreadyRegisteredEmail(model.Email, origin);
 				//  See: sendAlreadyRegisteredEmail(string email, string origin)
 				return (false, "User already registered");
+            }
+
+            if(Context.Members.Any(x => x.MobileNumber == model.MobileNumber.ToLowerInvariant()))
+            {
+                return (false, "This mobible phone is already in use.");
             }
 
             //  Must accept terms
@@ -154,7 +157,7 @@ namespace PS.API.Repositories
             //return new AuthenticateResponse(user, jwtToken, refreshToken.Token, errorMessage, (int)HttpStatusCode.OK);
 
             //  TODO - Extract below into a function
-            rsp.StatusCode = (int)HttpStatusCode.OK;
+            /*rsp.StatusCode = (int)HttpStatusCode.OK;
             rsp.Id = user.Id;
             rsp.FirstName = user.FirstName;
             rsp.LastName = user.LasttName;
@@ -165,9 +168,19 @@ namespace PS.API.Repositories
             rsp.StatusCode = (int)HttpStatusCode.OK;
             rsp.RefreshToken = refreshToken.Token;
             rsp.Message = string.Empty;
-            return rsp;
+            rsp.MobileNumber = user.MobileNumber;
+            return rsp;*/
 
-        }
+            var userResponse = GetAuthenticatedResponse(
+                user,
+				jwtToken,
+				refreshToken.Token,
+				(int)HttpStatusCode.OK
+                );
+
+            return userResponse;
+
+		}
 
         public async Task<Member>GetMemberByIdAsync(Guid id)
         {
@@ -207,7 +220,7 @@ namespace PS.API.Repositories
 
                 // generate new jwt
                 var jwtToken = JwtUtilis.GenerateJwtToken(response.user);
-                var authResponse = GetAuthenticatedResponse(response.user, jwtToken, newRefreshToken.Token);
+                var authResponse = GetAuthenticatedResponse(response.user, jwtToken, newRefreshToken.Token, (int)HttpStatusCode.OK);
 
                 return authResponse;
             }
@@ -255,6 +268,7 @@ namespace PS.API.Repositories
 		}
 
         //  TODO - Change response type
+        //  This will cause a bottle-neck so we will pass this out to a queue
         public async Task<UploadPhotoResponse> UploadUPhoto(string token, IFormFile imageFile)
         {
             var response = await GetUserByRefreshTokenAsync(token);
@@ -309,7 +323,54 @@ namespace PS.API.Repositories
         }
 
 
-        #region helpers
+
+		#region helpers
+
+        /// <summary>
+        /// Helper method to populate a <see cref="AuthenticateResponse"/> with instance
+        /// data of an authticate <see cref="Member"/>(user)
+        /// </summary>
+        /// <param name="statusCode"></param>
+        /// <param name="id"></param>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="jwtToken"></param>
+        /// <param name="photo"></param>
+        /// <param name="emailAddress"></param>
+        /// <param name="refreshToken"></param>
+        /// <param name="errorMessage"></param>
+        /// <param name="mobileNumber"></param>
+        /// <returns></returns>
+        /*public AuthenticateResponse GetUserResponse(
+            int statusCode,
+            Guid id,
+            string firstName,
+            string lastName,
+            string jwtToken,
+            string photo,
+            string emailAddress,
+            string refreshToken,
+            string errorMessage,
+            string mobileNumber
+            ) {
+            var response = new AuthenticateResponse()
+            {
+                StatusCode = statusCode,
+                Id = id,
+                FirstName = firstName,
+                LastName = lastName,
+                JwtToken = jwtToken,
+                Photo = photo,
+                EmailAddress = emailAddress,
+                RefreshToken = refreshToken,
+                Message = errorMessage,
+                MobileNumber = mobileNumber
+            };
+
+            return response;
+
+		}*/
+
         private async Task<(Member user, bool Success, string ErrorMessage)> GetUserByRefreshTokenAsync(string token)
         {
             var user = await Context.Members.SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token == token));
@@ -370,7 +431,7 @@ namespace PS.API.Repositories
             revokeRefreshToken(refreshToken, ipAddress, "Replaced by new token", newRefreshToken.Token);
             return newRefreshToken;
         }
-        private AuthenticateResponse GetAuthenticatedResponse(Member user, string jwtToken, string newRefreshToken)
+        private AuthenticateResponse GetAuthenticatedResponse(Member user, string jwtToken, string newRefreshToken, int statusCode)
         {
             return new AuthenticateResponse()
             {
@@ -383,7 +444,9 @@ namespace PS.API.Repositories
                 EmailAddress = user.EmailAddress,
                 RefreshToken = newRefreshToken,
                 Message = string.Empty,
-                StatusCode = 200,
+                StatusCode = statusCode,
+                MobileNumber = user.MobileNumber,
+                DistanceUnit = user.DistanceUnit,
             };
         }
 

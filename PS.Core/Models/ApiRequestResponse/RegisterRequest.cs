@@ -34,5 +34,8 @@ namespace PS.Core.Models.ApiRequestResponse
 
         [Range(typeof(bool), "true", "true", ErrorMessage = "To use this service, you must agree to our terms of service.")]
         public bool AcceptTerms { get; set; } = false;
-    }
+
+        [Required]
+        public string MobileNumber { get; set; } = string.Empty;
+	}
 }

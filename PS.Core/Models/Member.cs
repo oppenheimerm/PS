@@ -38,18 +38,30 @@ namespace PS.Core.Models
         /// <summary>
         /// Verification date of emaail
         /// </summary>
+        [JsonIgnore]
         public DateTime? Verified { get; set; }
+        [JsonIgnore]
         public bool IsVerified => Verified.HasValue || PasswordReset.HasValue;
+        [JsonIgnore]
         public string? ResetToken { get; set; }
+        [JsonIgnore]
         public DateTime? ResetTokenExpires { get; set; }
+        [JsonIgnore]
         public DateTime? PasswordReset { get; set; }
         public DateTime Created { get; set; }
         public DateTime? Updated { get; set; }
+        public string? MobileNumber { get; set; }
+
+        /// <summary>
+        /// Distance in miles(0) / kilometers(1). Default 1
+        /// </summary>
+        public int DistanceUnit { get; set; } = 1; // Kilometers
 
         [JsonIgnore]
         public List<RefreshToken>? RefreshTokens { get; set; }
+
+        public bool AcceptTerms { get; set; } = false;
         [JsonIgnore]
-        public bool AcceptTerms { get; set; }
         public string VerificationToken { get; set; } = string.Empty;
 
         public string MemberPhoto { get; set; } = string.Empty;
