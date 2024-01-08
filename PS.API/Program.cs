@@ -161,6 +161,13 @@ app.UseStaticFiles(new StaticFileOptions()
     Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\img\logos")),
     RequestPath = new PathString("/img/logos")
 });
+app.UseStaticFiles(new StaticFileOptions()
+{
+	FileProvider = new PhysicalFileProvider(
+	Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\usersimages")),
+	RequestPath = new PathString("/usersimages")
+});
+
 
 app.UseDirectoryBrowser(new DirectoryBrowserOptions()
 {
@@ -168,7 +175,6 @@ app.UseDirectoryBrowser(new DirectoryBrowserOptions()
     Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\img\logos")),
     RequestPath = new PathString("/img/logos")
 });
-
 
 
 // configure HTTP request pipeline

@@ -14,36 +14,10 @@ namespace PS.Core.Models.ApiRequestResponse
         public string? Initials { get; set; } = string.Empty;
         public string? Photo {  get; set; } = string.Empty;
         public string? EmailAddress { get; set; } = string.Empty;
+        public string? MobileNumber { get; set; } = string.Empty;
+        public int DistanceUnit { get; set; } = 1;
 
-        [JsonIgnore] // refresh token is returned in http only cookie
+		[JsonIgnore] // refresh token is returned in http only cookie
         public string RefreshToken { get; set; } = string.Empty;
-
-
-        /*[JsonConstructor]
-        public AuthenticateResponse(
-            Guid id, 
-            string firstName,
-            string lastName,
-            string jwtToken,
-            string initials,
-            string photo,
-            string emaiilAddress,
-            int statusCode,
-            string refreshToken,
-            string message
-            )
-        {
-            Id = id;
-            FirstName = firstName;
-            LastName = lastName;
-            JwtToken = jwtToken;
-            Initials = initials;
-            Photo = photo;
-            EmailAddress = emaiilAddress;
-            StatusCode = statusCode;
-            Message = message;
-            RefreshToken = refreshToken;
-        }*/
-
     }
 }

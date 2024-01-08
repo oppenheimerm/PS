@@ -20,7 +20,8 @@ namespace PS.API.ModelHelpers
                     EmailAddress = registerRequest.EmailAddress.ToLowerInvariant(),
                     Title = registerRequest.Title,
                     AcceptTerms = registerRequest.AcceptTerms,
-                };
+					MobileNumber = registerRequest.MobileNumber
+				};
             }
         }
     }

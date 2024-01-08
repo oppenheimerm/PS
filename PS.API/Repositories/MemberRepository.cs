@@ -30,6 +30,7 @@ namespace PS.API.Repositories
             if(member != null)
             {
                 member.MemberPhoto = photoName;
+                member.Updated = DateTime.Now;
                 Context.Members.Update(member);
                 await Context.SaveChangesAsync();
                 Logger.LogInformation($"Member with Id: {member.Id}, updated photo at: {DateTime.UtcNow}");
