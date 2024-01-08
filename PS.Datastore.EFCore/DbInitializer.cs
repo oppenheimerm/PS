@@ -132,7 +132,7 @@ namespace PS.Datastore.EFCore
             context.SaveChanges();
 
             var vendors = new Vendor[] {
-                new Vendor { VendorName = "ASDA Petrol", VendorAddress = "Asda House South Bank Great Wilson Street Leeds", VendorPostcode = "LS11 5AD", CountryId = 1, Logo = string.Empty, VendorCode = "ASDA", VendorLogo = "asda" },
+                new Vendor { VendorName = "ASDA Petrol", VendorAddress = "Asda House South Bank Great Wilson Street Leeds", VendorPostcode = "LS11 5AD", CountryId = 1, VendorCode = "ASDA", VendorLogo = "asda" },
                 new Vendor { VendorName = "Shell UK", VendorAddress = "Shell Centre London",VendorPostcode = "SE1 7NA", CountryId = 1, VendorCode = "SHUK", VendorLogo = "shell" },
                 new Vendor { VendorName = "BP UK", VendorAddress = "1 St James's Square, St. James's, London", VendorPostcode = "SW1Y 4PD", CountryId = 1, VendorCode = "BPUK", VendorLogo = "bp" },
                 new Vendor { VendorName = "Texaco UK", VendorAddress = "Va​lero Energy Ltd 1 Canada Square​ London", VendorPostcode = "E14 5AA", CountryId = 1, VendorCode = "TXUK", VendorLogo = "texaco" },
