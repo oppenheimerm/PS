@@ -1,0 +1,93 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,100;9..40,200;9..40,300;9..40,400;9..40,700;9..40,900&display=swap');
+
+:root {
+    /*========== 
+        Font and typography 
+     ==========*/
+    --body-font: 'DM Sans', sans-serif;
+    --normal-font-size: 1rem; /* 16 px */
+    --biggest-font-size: 4rem; /* 64 px */
+    --h1-larger-font: 2.875rem; /* 46px */
+    --h1-font-size: 2.25rem; /* 36 px */
+    --h2-font-size: 1.5rem; /* 24 px */
+    --h3-font-size: 1.25rem; /* 20 px */
+    --h4-font-size: 1rem; /* 16 px */
+    --small-font-size: .875rem; /* 14 px */
+    --smaller-font-size: .775rem; /* 12.4 px */
+    --letter-spacing-wide: 0.125rem; /* 2px */
+    --letter-spacing-narrow: -0.05rem; /* -0.9px */
+    /*========== 
+        Colours
+     ==========*/
+    /* backgrounds */
+    --black-1: #151a1d;
+    --black-2: #202326;
+    --light-black: #2f2f2f;
+    --grey-colour: #3C3F40;
+    --hightlight-colour: #13AE70;
+    --hightlight-colour-hover: #13AD3B;
+    --ok-colour: #2ECC71;
+    --info-colour: #2980B9;
+    --warning-colour: #E67E22;
+    --error-colour: #C0392B;
+    /*========== 
+        Margins Bottom 
+    ==========*/
+    --mb-0-5: .5rem; /* 8px */
+    --mb-0-75: .75rem; /* 12px */
+    --mb-1: 1rem; /* 16px */
+    --mb-1-5: 1.5rem; /* 24px */
+    --mb-2: 2rem; /* 32px */
+    --mb-2-5: 2.5rem; /* 40px */
+    --mb-3: 3rem; /* 48px */
+    --mb-4: 3.6rem; /* 65px */
+    /*========== 
+        Animation
+    ==========*/
+    --ease-in-out-2-sec: .2s ease-in-out;
+    --ease-in-out-3-sec: .3s ease-in-out;
+    /*========== 
+        Box shadows
+    ==========*/
+    --light-box-shadow: 0 2px 12px 0 rgba(0,0,0,.64);
+}
+
+/* 2. Base */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    height: 100%;
+    background-color: var(--black-1);
+}
+
+
+html, body {
+    font-family: var(--body-font);
+}
+
+body {
+    line-height: 1.2;
+}
+
+h1 {
+    font-size: var(--h1-font-size);
+}
+
+h2 {
+    font-size: var(--h2-font-size);
+}
+
+h3 {
+    font-size: var(--h3-font-size);
+}
+
+h4 {
+    font-size: var(--h4-font-size);
+}
+
+

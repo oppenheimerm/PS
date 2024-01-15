@@ -1,1 +1,0 @@
-export default class AppView{constructor(e,{onCloseMobileModal:s}={}){this.root=e,window.addEventListener("scroll",function(e){const s=document.getElementsByClassName("header");for(let e=0;e<s.length;e++)this.window.scrollY>=90?s[e].classList.add("scroll-header"):s[e].classList.remove("scroll-header")},500)}}

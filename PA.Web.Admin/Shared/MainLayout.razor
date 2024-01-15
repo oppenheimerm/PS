@@ -1,0 +1,66 @@
+﻿@inherits LayoutComponentBase
+
+<PageTitle>PA.Web.Admin</PageTitle>
+
+<div id="app">
+    <div class="main-content">
+        <div class="main-content-inner">
+            <aside>
+                <div class="content-wrap">
+                    <NavMenu />
+                </div>
+            </aside>
+            <div class="main-content-wrap">
+                <nav class="top-nav-wrapper">
+                    <div class="nav-content">
+                        <div class="logo">
+                            <img src="./img/assets/logo-colour.png">
+                            <span>PetrolAssist</span>
+                        </div>
+                        <div class="icon-wrap">
+                            <span class="material-symbols-sharp">
+                                search
+                            </span>
+                            <span class="material-symbols-sharp">
+                                apps
+                            </span>
+                            <span class="material-symbols-sharp">
+                                expand_content
+                            </span>
+                            <div class="notification">
+                                <span class="material-symbols-sharp">
+                                    notifications
+                                </span>
+                                <span class="notifications-count">1</span>
+                            </div>
+                            <div class="user">
+                                <div class="user-wrap"><img src="./img/assets/img-user.jpg"></div>
+                                <span>James</span>
+                            </div>
+                            <span class="material-symbols-sharp">
+                                settings
+                            </span>
+                        </div>
+                    </div>
+                </nav>
+                <div class="page-content">
+                    <div class="container">
+                        @Body
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="container">
+            <div class="footer-wrap">
+                <div class="lhs">
+                    <span>PETROLASSIST.COM</span>
+                </div>
+                <div class="rhs">
+                    ** FOOTER LINKS HERE **
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
