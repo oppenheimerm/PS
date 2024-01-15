@@ -1,0 +1,130 @@
+﻿@implements IDisposable
+@inject NavigationManager NavigationManager
+
+@code {
+    private string? currentUrl;
+    private bool ShowStationSubMenu { get; set; } = false;
+
+    protected override void OnInitialized()
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        NavigationManager.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
+        StateHasChanged();
+    }
+
+    //  Make sure you have: @rendermode InteractiveServer set
+    void ToggleStationsSubMenu()
+    {
+        ShowStationSubMenu = !ShowStationSubMenu;
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= OnLocationChanged;
+    }
+}
+
+
+<div class="side-menu">
+
+    <div class="logo">
+        <img src="./img/assets/logo-colour.png" b-b17xmb5ng6="">
+        <span b-b17xmb5ng6="">PetrolAssist</span>
+    </div>
+
+    <div class="menu-items-wrap">
+
+        <div class="top-items">
+            <div class="item">
+                <span class="title">MAIN</span>
+                <NavLink class="list-item" href="" Match="NavLinkMatch.All">
+                    <span class="material-symbols-sharp">
+                        home
+                    </span>
+                    <span class="list-item-title" aria-hidden="true"></span> Home
+                </NavLink>
+                <NavLink class="list-item" href="account">
+                    <span class="material-symbols-sharp">
+                        account_circle
+                    </span>
+                    <span class="list-item-title" aria-hidden="true"></span> Account
+                </NavLink>
+            </div>
+
+            <div class="item">
+                <div class="sub-menu">
+                    <a @onclick="ToggleStationsSubMenu" href="#settings">
+                        <span class="material-symbols-sharp">
+                            local_gas_station
+                        </span>
+                        <span class="subtitle">Stations</span>
+                        <div class="menu-icon" style="display: @(ShowStationSubMenu ? "none" : "block")">
+                            <span class="material-symbols-sharp">
+                                expand_more
+                            </span>
+                        </div>
+                        <div class="menu-icon" style="display: @(ShowStationSubMenu ? "block" : "none")">
+                            <span class="material-symbols-sharp">
+                                keyboard_arrow_up
+                            </span>
+                        </div>
+
+                    </a>
+                    <ul style="display: @(ShowStationSubMenu ? "block" : "none")">
+                        <li>
+                            <NavLink class="" href="stations">
+                                Stations
+                            </NavLink>
+                        </li>
+                        <li><a href='#settings'>Account</a></li>
+                        <li><a href='#settings'>Profile</a></li>
+                        <li><a href='#settings'>Secruity &amp; Privacy</a></li>
+                        <li><a href='#settings'>Password</a></li>
+                        <li><a href='#settings'>Notification</a></li>
+                    </ul>
+                </div>
+                <NavLink class="list-item" href="dashoard">
+                    <span class="material-symbols-sharp">
+                        dashboard
+                    </span>
+                    <span class="list-item-title" aria-hidden="true"></span> Dashboard
+                </NavLink>
+                <NavLink class="list-item" href="dashoard">
+                    <span class="material-symbols-sharp">
+                        dashboard
+                    </span>
+                    <span class="list-item-title" aria-hidden="true"></span> Dashboard
+                </NavLink>
+            </div>
+
+            <div class="item">
+                <span class="title">MAIN</span>
+                <NavLink class="list-item" href="dashoard">
+                    <span class="material-symbols-sharp">
+                        dashboard
+                    </span>
+                    <span class="list-item-title" aria-hidden="true"></span> Dashboard
+                </NavLink>
+                <NavLink class="list-item" href="dashoard">
+                    <span class="material-symbols-sharp">
+                        dashboard
+                    </span>
+                    <span class="list-item-title" aria-hidden="true"></span> Dashboard
+                </NavLink>
+            </div>
+        </div>
+
+        <div class="bottom-tems">
+            <h1>Bottom Items</h1>
+        </div>
+
+    </div>
+
+</div>
+
+

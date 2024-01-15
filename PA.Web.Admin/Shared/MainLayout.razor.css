@@ -1,0 +1,96 @@
+::deep.top-nav-wrapper {
+    border-radius: 8px;
+    width: 96%;
+    margin-left: auto;
+    margin-right: auto;
+    position: sticky;
+    position: -webkit-sticky; /* Safari */
+    top: 0;
+    z-index: 10;
+    box-shadow: var(--light-box-shadow);
+    background-color: var(--light-black);
+    padding: var(--mb-0-5);
+    margin-bottom: var(--mb-1);
+    margin-top: var(--mb-1);
+}
+
+.nav-content {
+    display: flex;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-content .logo,
+.nav-content .icon-wrap {
+    display: flex;
+    align-items: center;
+}
+
+.nav-content .logo {
+    font-weight: bold;
+    gap: 12px;
+}
+
+.nav-content .logo img {
+    width: 56px;
+    height: 56px;
+}
+
+.nav-content .icon-wrap {
+    gap: 20px;
+}
+
+.icon-wrap .notification {
+    position: relative;
+}
+
+.icon-wrap .notifications-count {
+    background: var(--info-colour);
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: absolute;
+    top: -16px;
+    right: -16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.nav-content .icon-wrap .user img {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    object-fit: contain;
+}
+
+
+@media (max-width: 640.98px) {
+}
+
+@media (min-width: 641px) {
+}
+
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}

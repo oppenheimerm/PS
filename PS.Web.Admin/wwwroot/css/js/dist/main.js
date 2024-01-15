@@ -1,1 +1,0 @@
-import AppView from"./AppView.js";const app=document.getElementById("app"),view=new AppView(app,{});
